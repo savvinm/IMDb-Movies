@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    let filmsViewModel = FilmsListViewModel()
     var body: some View {
         Text("Hello, world!")
             .padding()
+        Button(action: {
+            filmsViewModel.fetchFilms()
+        }, label: { Text("Fetch films") })
+        .padding()
     }
 }
 

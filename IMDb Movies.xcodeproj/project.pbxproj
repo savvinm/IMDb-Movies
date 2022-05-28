@@ -11,6 +11,9 @@
 		B5C0B33F2842ABAB00A1EBBE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B33E2842ABAB00A1EBBE /* ContentView.swift */; };
 		B5C0B3412842ABAF00A1EBBE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5C0B3402842ABAF00A1EBBE /* Assets.xcassets */; };
 		B5C0B3442842ABAF00A1EBBE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5C0B3432842ABAF00A1EBBE /* Preview Assets.xcassets */; };
+		B5C0B3512842B31A00A1EBBE /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3502842B31A00A1EBBE /* APIService.swift */; };
+		B5C0B3532842B3F400A1EBBE /* IMDbQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3522842B3F400A1EBBE /* IMDbQuery.swift */; };
+		B5C0B3552842B77E00A1EBBE /* FilmsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		B5C0B33E2842ABAB00A1EBBE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B5C0B3402842ABAF00A1EBBE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5C0B3432842ABAF00A1EBBE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B5C0B3502842B31A00A1EBBE /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		B5C0B3522842B3F400A1EBBE /* IMDbQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMDbQuery.swift; sourceTree = "<group>"; };
+		B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +57,11 @@
 		B5C0B33B2842ABAB00A1EBBE /* IMDb Movies */ = {
 			isa = PBXGroup;
 			children = (
+				B5C0B34F2842B2FD00A1EBBE /* ViewModels */,
+				B5C0B34E2842B29000A1EBBE /* Models */,
+				B5C0B34D2842B24300A1EBBE /* Views */,
+				B5C0B34B2842B22E00A1EBBE /* Services */,
 				B5C0B33C2842ABAB00A1EBBE /* IMDb_MoviesApp.swift */,
-				B5C0B33E2842ABAB00A1EBBE /* ContentView.swift */,
 				B5C0B3402842ABAF00A1EBBE /* Assets.xcassets */,
 				B5C0B3422842ABAF00A1EBBE /* Preview Content */,
 			);
@@ -67,6 +76,38 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		B5C0B34B2842B22E00A1EBBE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B5C0B3502842B31A00A1EBBE /* APIService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B5C0B34D2842B24300A1EBBE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B5C0B33E2842ABAB00A1EBBE /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B5C0B34E2842B29000A1EBBE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B5C0B3522842B3F400A1EBBE /* IMDbQuery.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B5C0B34F2842B2FD00A1EBBE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,6 +115,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5C0B3472842ABAF00A1EBBE /* Build configuration list for PBXNativeTarget "IMDb Movies" */;
 			buildPhases = (
+				B5C0B34A2842B10D00A1EBBE /* Run swiftlint */,
 				B5C0B3352842ABAB00A1EBBE /* Sources */,
 				B5C0B3362842ABAB00A1EBBE /* Frameworks */,
 				B5C0B3372842ABAB00A1EBBE /* Resources */,
@@ -132,12 +174,36 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B5C0B34A2842B10D00A1EBBE /* Run swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run swiftlint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse \n    echo \"SwiftLint not installed\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B5C0B3352842ABAB00A1EBBE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5C0B3552842B77E00A1EBBE /* FilmsListViewModel.swift in Sources */,
 				B5C0B33F2842ABAB00A1EBBE /* ContentView.swift in Sources */,
+				B5C0B3512842B31A00A1EBBE /* APIService.swift in Sources */,
+				B5C0B3532842B3F400A1EBBE /* IMDbQuery.swift in Sources */,
 				B5C0B33D2842ABAB00A1EBBE /* IMDb_MoviesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

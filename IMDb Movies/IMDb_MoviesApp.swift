@@ -8,6 +8,7 @@
 import SwiftUI
 
 @main
+// swiftlint: disable all
 struct IMDb_MoviesApp: App {
     var body: some Scene {
         WindowGroup {
