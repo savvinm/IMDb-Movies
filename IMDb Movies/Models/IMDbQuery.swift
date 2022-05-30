@@ -11,7 +11,7 @@ class IMDbQuery: Codable {
     let items: [IMDbFilm]
     let errorMessage: String
 }
-class IMDbFilm: Codable {
+class IMDbFilm: Identifiable, Codable {
     let id: String
     let title: String
     let fullTitle: String
@@ -20,8 +20,11 @@ class IMDbFilm: Codable {
     let image: String
     let runtimeStr: String
     let plot: String
+    let genres: String
+    let directors: String
+    let stars: String
+    let contentRating: String
     let genreList: [GenrePair]
-    
     
     class GenrePair: Codable {
         let key: String

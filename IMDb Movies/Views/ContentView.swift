@@ -8,14 +8,65 @@
 import SwiftUI
 
 struct ContentView: View {
-    let filmsViewModel = FilmsListViewModel()
+    @ObservedObject var filmsViewModel = FilmsListViewModel()
     var body: some View {
-        Text("Hello, world!")
-            .padding()
-        Button(action: {
-            filmsViewModel.fetchFilms()
-        }, label: { Text("Fetch films") })
-        .padding()
+        GeometryReader { geometry in
+            NavigationView {
+                ScrollView {
+                    VStack {
+                        FilmsHorizontalScroll(title: "In theaters", items: filmsViewModel.inTheaters, geometry: geometry)
+                        FilmsHorizontalScroll(title: "Coming soon", items: filmsViewModel.comingSoon, geometry: geometry)
+                    }
+                    .padding()
+                }
+                .navigationBarHidden(true)
+                //.onAppear { filmsViewModel.fetchFilms() }
+            }
+        }
+    }
+}
+
+struct FilmsHorizontalScroll: View {
+    let title: String
+    let items: [IMDbFilm]
+    let geometry: GeometryProxy
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(title).font(.title).fontWeight(Font.Weight.semibold)
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 20) {
+                    ForEach(items) { film in
+                        filmPreviev(for: film)
+                            .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.35)
+                    }
+                }
+            }
+        }
+    }
+    
+    func filmPreviev(for film: IMDbFilm) -> some View {
+        GeometryReader { geometry in
+            NavigationLink(destination: { FIlmDetailView(film: film) }) {
+                VStack(alignment: .leading) {
+                    AsyncImage(url: URL(string: film.image)) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: geometry.size.width, height: geometry.size.height * 0.7)
+                            .clipped()
+                            .cornerRadius(10)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(width: geometry.size.width, height: geometry.size.height * 0.7)
+                    Text(film.title)
+                        .font(.headline)
+                        .multilineTextAlignment(.leading)
+                    Spacer()
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
     }
 }
 

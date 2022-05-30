@@ -8,8 +8,7 @@
 import Foundation
 
 class APIService {
-    @Published var status: Bool = false
-    func fetchInTheaters(from url: String, completion: @escaping (Result<IMDbQuery, APIError>) -> Void) {
+    func fetchFilms(from url: String, completion: @escaping (Result<IMDbQuery, APIError>) -> Void) {
         guard let url = URL(string: url) else {
             completion(.failure(.invalidURL))
             return
@@ -44,10 +43,10 @@ class APIService {
     }
 }
 
-    enum APIError: Error {
-        case invalidURL
-        case invalidResponseStatus
-        case dataTaskError
-        case corruptData
-        case decodingError
-    }
+enum APIError: Error {
+    case invalidURL
+    case invalidResponseStatus
+    case dataTaskError
+    case corruptData
+    case decodingError
+}

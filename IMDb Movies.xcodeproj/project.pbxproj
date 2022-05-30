@@ -14,6 +14,7 @@
 		B5C0B3512842B31A00A1EBBE /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3502842B31A00A1EBBE /* APIService.swift */; };
 		B5C0B3532842B3F400A1EBBE /* IMDbQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3522842B3F400A1EBBE /* IMDbQuery.swift */; };
 		B5C0B3552842B77E00A1EBBE /* FilmsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */; };
+		B5C0B3572844130600A1EBBE /* FIlmDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3562844130600A1EBBE /* FIlmDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		B5C0B3502842B31A00A1EBBE /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		B5C0B3522842B3F400A1EBBE /* IMDbQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMDbQuery.swift; sourceTree = "<group>"; };
 		B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsListViewModel.swift; sourceTree = "<group>"; };
+		B5C0B3562844130600A1EBBE /* FIlmDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIlmDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				B5C0B33E2842ABAB00A1EBBE /* ContentView.swift */,
+				B5C0B3562844130600A1EBBE /* FIlmDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5C0B3552842B77E00A1EBBE /* FilmsListViewModel.swift in Sources */,
+				B5C0B3572844130600A1EBBE /* FIlmDetailView.swift in Sources */,
 				B5C0B33F2842ABAB00A1EBBE /* ContentView.swift in Sources */,
 				B5C0B3512842B31A00A1EBBE /* APIService.swift in Sources */,
 				B5C0B3532842B3F400A1EBBE /* IMDbQuery.swift in Sources */,
