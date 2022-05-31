@@ -8,36 +8,29 @@
 import Foundation
 
 class FilmsListViewModel: ObservableObject {
-    private let apiKey = "k_nrvtd8at"
-    @Published private(set) var inTheaters = [IMDbFilm]()
-    @Published private(set) var comingSoon = [IMDbFilm]()
+    @Published private(set) var inTheaters = [Film]()
+    @Published private(set) var comingSoon = [Film]()
     
     init() {
         fetchFilms()
     }
     
     func fetchFilms() {
-        let api = APIService()
-        var url = "https://imdb-api.com/en/API/InTheaters/\(apiKey)"
-        api.fetchFilms(from: url) { result in
-            switch result {
-            case .success(let query):
-                DispatchQueue.main.async { [weak self] in
-                    self?.inTheaters = query.items
-                }
-            case .failure(let error):
+        let repositiry = FilmRepository()
+        repositiry.list(option: .inTheaters) { [weak self] films, error in
+            if let error = error {
                 print(error)
             }
+            if let films = films {
+                self?.inTheaters = films
+            }
         }
-        url = "https://imdb-api.com/en/API/ComingSoon/\(apiKey)"
-        api.fetchFilms(from: url) { result in
-            switch result {
-            case .success(let query):
-                DispatchQueue.main.async { [weak self] in
-                    self?.comingSoon = query.items
-                }
-            case .failure(let error):
+        repositiry.list(option: .comingSoon) { [weak self] films, error in
+            if let error = error {
                 print(error)
+            }
+            if let films = films {
+                self?.comingSoon = films
             }
         }
     }

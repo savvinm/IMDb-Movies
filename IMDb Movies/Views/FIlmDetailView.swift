@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct FIlmDetailView: View {
-    let film: IMDbFilm
+    let film: Film
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
                 VStack(alignment: .leading) {
                     titleBlock
-                    AsyncImage(url: URL(string: film.image)) { image in
+                    AsyncImage(url: URL(string: film.poster)) { image in
                         image
                             .resizable()
                             .scaledToFit()
@@ -43,8 +43,8 @@ struct FIlmDetailView: View {
     }
     private var genresBlock: some View {
         HStack {
-            ForEach(film.genreList, id: \.self.key) { genrePair in
-                Text(genrePair.value)
+            ForEach(film.genres, id: \.self) { genre in
+                Text(genre)
                     .padding(5)
                     .background {
                         Capsule()

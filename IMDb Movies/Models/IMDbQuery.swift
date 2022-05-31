@@ -7,11 +7,11 @@
 
 import Foundation
 
-class IMDbQuery: Codable {
+struct IMDbQuery: Codable {
     let items: [IMDbFilm]
     let errorMessage: String
 }
-class IMDbFilm: Identifiable, Codable {
+struct IMDbFilm: Identifiable, Codable {
     let id: String
     let title: String
     let fullTitle: String
@@ -26,7 +26,7 @@ class IMDbFilm: Identifiable, Codable {
     let contentRating: String
     let genreList: [GenrePair]
     
-    class GenrePair: Codable {
+    struct GenrePair: Codable {
         let key: String
         let value: String
     }

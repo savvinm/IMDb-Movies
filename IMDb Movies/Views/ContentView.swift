@@ -28,7 +28,7 @@ struct ContentView: View {
 
 struct FilmsHorizontalScroll: View {
     let title: String
-    let items: [IMDbFilm]
+    let items: [Film]
     let geometry: GeometryProxy
     var body: some View {
         VStack(alignment: .leading) {
@@ -44,11 +44,11 @@ struct FilmsHorizontalScroll: View {
         }
     }
     
-    func filmPreviev(for film: IMDbFilm) -> some View {
+    func filmPreviev(for film: Film) -> some View {
         GeometryReader { geometry in
             NavigationLink(destination: { FIlmDetailView(film: film) }) {
                 VStack(alignment: .leading) {
-                    AsyncImage(url: URL(string: film.image)) { image in
+                    AsyncImage(url: URL(string: film.poster)) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
