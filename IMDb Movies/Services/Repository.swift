@@ -23,6 +23,8 @@ struct FilmRepository: Repository {
             moyaOption = .inTheaters
         case .comingSoon:
             moyaOption = .comingSoon
+        case .top250:
+            moyaOption = .top250
         }
         provider.request(moyaOption) { result in
             switch result {
@@ -41,7 +43,6 @@ struct FilmRepository: Repository {
                 complitionHandler(nil, error)
                 return
             }
-            
         }
     }
     private func createFilm(from imdbFilm: IMDbFilm) -> Film {
@@ -72,4 +73,5 @@ enum RepositoryError: Error {
 enum ListOption {
     case inTheaters
     case comingSoon
+    case top250
 }

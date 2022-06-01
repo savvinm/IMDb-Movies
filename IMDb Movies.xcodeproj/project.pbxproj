@@ -13,11 +13,13 @@
 		B5C0B3412842ABAF00A1EBBE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5C0B3402842ABAF00A1EBBE /* Assets.xcassets */; };
 		B5C0B3442842ABAF00A1EBBE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5C0B3432842ABAF00A1EBBE /* Preview Assets.xcassets */; };
 		B5C0B3532842B3F400A1EBBE /* IMDbQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3522842B3F400A1EBBE /* IMDbQuery.swift */; };
-		B5C0B3552842B77E00A1EBBE /* FilmsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */; };
+		B5C0B3552842B77E00A1EBBE /* FilmsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3542842B77E00A1EBBE /* FilmsViewModel.swift */; };
 		B5C0B3572844130600A1EBBE /* FIlmDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3562844130600A1EBBE /* FIlmDetailView.swift */; };
 		B5C0B3592844DA2A00A1EBBE /* IMDbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3582844DA2A00A1EBBE /* IMDbService.swift */; };
 		B5C0B35B2846ADC200A1EBBE /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B35A2846ADC200A1EBBE /* Film.swift */; };
 		B5C0B35D2846AF0E00A1EBBE /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B35C2846AF0E00A1EBBE /* Repository.swift */; };
+		B5C0B35F28475FFD00A1EBBE /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B35E28475FFD00A1EBBE /* RealmModels.swift */; };
+		B5C0B3612847682800A1EBBE /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3602847682800A1EBBE /* DBManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,11 +31,13 @@
 		B5C0B3402842ABAF00A1EBBE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5C0B3432842ABAF00A1EBBE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B5C0B3522842B3F400A1EBBE /* IMDbQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMDbQuery.swift; sourceTree = "<group>"; };
-		B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsListViewModel.swift; sourceTree = "<group>"; };
+		B5C0B3542842B77E00A1EBBE /* FilmsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsViewModel.swift; sourceTree = "<group>"; };
 		B5C0B3562844130600A1EBBE /* FIlmDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIlmDetailView.swift; sourceTree = "<group>"; };
 		B5C0B3582844DA2A00A1EBBE /* IMDbService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMDbService.swift; sourceTree = "<group>"; };
 		B5C0B35A2846ADC200A1EBBE /* Film.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
 		B5C0B35C2846AF0E00A1EBBE /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		B5C0B35E28475FFD00A1EBBE /* RealmModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
+		B5C0B3602847682800A1EBBE /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
 		D35A26781EE28AA83C95E719 /* Pods-IMDb Movies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IMDb Movies.release.xcconfig"; path = "Target Support Files/Pods-IMDb Movies/Pods-IMDb Movies.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +115,7 @@
 			children = (
 				B5C0B3582844DA2A00A1EBBE /* IMDbService.swift */,
 				B5C0B35C2846AF0E00A1EBBE /* Repository.swift */,
+				B5C0B3602847682800A1EBBE /* DBManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 			children = (
 				B5C0B3522842B3F400A1EBBE /* IMDbQuery.swift */,
 				B5C0B35A2846ADC200A1EBBE /* Film.swift */,
+				B5C0B35E28475FFD00A1EBBE /* RealmModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -136,7 +142,7 @@
 		B5C0B34F2842B2FD00A1EBBE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */,
+				B5C0B3542842B77E00A1EBBE /* FilmsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -274,10 +280,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5C0B3552842B77E00A1EBBE /* FilmsListViewModel.swift in Sources */,
+				B5C0B35F28475FFD00A1EBBE /* RealmModels.swift in Sources */,
+				B5C0B3552842B77E00A1EBBE /* FilmsViewModel.swift in Sources */,
 				B5C0B3572844130600A1EBBE /* FIlmDetailView.swift in Sources */,
 				B5C0B33F2842ABAB00A1EBBE /* ContentView.swift in Sources */,
 				B5C0B35D2846AF0E00A1EBBE /* Repository.swift in Sources */,
+				B5C0B3612847682800A1EBBE /* DBManager.swift in Sources */,
 				B5C0B3532842B3F400A1EBBE /* IMDbQuery.swift in Sources */,
 				B5C0B3592844DA2A00A1EBBE /* IMDbService.swift in Sources */,
 				B5C0B33D2842ABAB00A1EBBE /* IMDb_MoviesApp.swift in Sources */,

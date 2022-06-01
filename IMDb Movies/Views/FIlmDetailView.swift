@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct FIlmDetailView: View {
+struct FilmDetailView: View {
     let film: Film
+    let filmsViewModel: FilmsViewModel
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
@@ -24,12 +25,24 @@ struct FIlmDetailView: View {
                     }
                     genresBlock
                     descriptionBlock
+                    ratingBlock
                 }
                 .padding()
             }
             //.navigationBarHidden(true)
         }
     }
+    
+    private var ratingBlock: some View {
+        VStack {
+            Text("Your rating").font(.headline)
+            Text(String(filmsViewModel.getRating(for: film) ?? 0))
+        }
+        .onTapGesture {
+            filmsViewModel.rate(film, rating: 6)
+        }
+    }
+    
     private var titleBlock: some View {
         VStack(alignment: .leading) {
             Text(film.title)
@@ -47,8 +60,7 @@ struct FIlmDetailView: View {
                 Text(genre)
                     .padding(5)
                     .background {
-                        Capsule()
-                            .stroke(Color.secondary, lineWidth: 3)
+                        Capsule().stroke(Color.secondary, lineWidth: 3)
                     }
             }
             .padding(.vertical)

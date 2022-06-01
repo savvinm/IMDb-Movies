@@ -13,6 +13,7 @@ public enum IMDbService {
     
     case inTheaters
     case comingSoon
+    case top250
 }
 
 extension IMDbService: TargetType {
@@ -24,14 +25,12 @@ extension IMDbService: TargetType {
         switch self {
         case .inTheaters: return "/inTheaters/\(IMDbService.key)"
         case .comingSoon: return "/ComingSoon/\(IMDbService.key)"
+        case .top250: return "/Top250Movies/\(IMDbService.key)"
         }
     }
     
     public var method: Moya.Method {
-        switch self {
-        case .inTheaters: return .get
-        case .comingSoon: return .get
-        }
+        return .get
     }
     
     public var sampleData: Data {

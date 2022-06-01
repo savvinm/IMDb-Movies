@@ -7,4 +7,5 @@ target 'IMDb Movies' do
 
   # Pods for IMDb Movies
     pod 'Moya', '~> 15.0'
+    pod 'RealmSwift'
 end
