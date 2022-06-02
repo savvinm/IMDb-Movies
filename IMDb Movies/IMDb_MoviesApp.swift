@@ -12,7 +12,7 @@ import SwiftUI
 struct IMDb_MoviesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }

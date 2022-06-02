@@ -8,42 +8,85 @@
 import SwiftUI
 
 struct FilmDetailView: View {
-    let film: Film
-    let filmsViewModel: FilmsViewModel
+    @ObservedObject var filmDetailViewModel: FilmDetailViewModel
+    
+    init(filmId: String) {
+        filmDetailViewModel = FilmDetailViewModel(filmId: filmId)
+    }
+    
     var body: some View {
         GeometryReader { geometry in
-            ScrollView {
-                VStack(alignment: .leading) {
-                    titleBlock
-                    AsyncImage(url: URL(string: film.poster)) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: geometry.size.width * 0.45, height: geometry.size.height * 0.3)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    genresBlock
-                    descriptionBlock
-                    ratingBlock
-                }
-                .padding()
+            switch filmDetailViewModel.status {
+            case .succes:
+                filmBody(for: filmDetailViewModel.film!, in: geometry)
+            case .loading:
+                ProgressView()
+            case .error(let error):
+                Text(error.localizedDescription)
             }
             //.navigationBarHidden(true)
         }
     }
     
-    private var ratingBlock: some View {
-        VStack {
-            Text("Your rating").font(.headline)
-            Text(String(filmsViewModel.getRating(for: film) ?? 0))
-        }
-        .onTapGesture {
-            filmsViewModel.rate(film, rating: 6)
+    private func filmBody(for film: Film, in geometry: GeometryProxy) -> some View {
+        ScrollView {
+            VStack(alignment: .leading) {
+                titleBlock(for: film)
+                posterAndRating(for: film, in: geometry)
+                genresBlock(for: film)
+                descriptionBlock(for: film)
+                PostersHorizontalScroll(title: "More like this", items: film.similars, geometry: geometry)
+            }
+            .padding()
         }
     }
     
-    private var titleBlock: some View {
+    private func posterAndRating(for film: Film, in geometry: GeometryProxy) -> some View {
+        HStack(alignment: .top) {
+            poster(for: film, in: geometry).cornerRadius(10)
+            Spacer()
+            ratingBlock(for: film)
+            Spacer()
+        }
+    }
+    
+    private func poster(for film: Film, in geometry: GeometryProxy) -> some View {
+        AsyncImage(url: URL(string: film.posterURL)) { image in
+            image
+                .resizable()
+                .scaledToFit()
+                .frame(width: geometry.size.width * 0.5, height: geometry.size.height * 0.35)
+        } placeholder: {
+            ProgressView()
+        }
+    }
+    
+    private func ratingBlock(for film: Film) -> some View {
+        VStack {
+            VStack {
+                Text("IMDb Rating")
+                HStack {
+                    Image(systemName: "star.fill").foregroundColor(.yellow)
+                    Text("\(film.imdbRating)/10")
+                }
+            }
+            VStack {
+                Text("Your rating").font(.headline)
+                HStack {
+                    if film.userRating != nil {
+                        Image(systemName: "star.fill").foregroundColor(.blue)
+                        Text(String(film.userRating!))
+                    } else {
+                        Image(systemName: "star").foregroundColor(.blue)
+                        Button(action: {}, label: { Text("Rate") })
+                            .buttonStyle(PlainButtonStyle())
+                    }
+                }
+            }
+        }
+    }
+    
+    private func titleBlock(for film: Film) -> some View {
         VStack(alignment: .leading) {
             Text(film.title)
                 .font(.title)
@@ -54,25 +97,19 @@ struct FilmDetailView: View {
             }
         }
     }
-    private var genresBlock: some View {
+    private func genresBlock(for film: Film) -> some View {
         HStack {
-            ForEach(film.genres, id: \.self) { genre in
-                Text(genre)
-                    .padding(5)
-                    .background {
-                        Capsule().stroke(Color.secondary, lineWidth: 3)
-                    }
-            }
-            .padding(.vertical)
+            Text(film.genres)
+                .padding(.vertical)
         }
     }
-    private var descriptionBlock: some View {
+    private func descriptionBlock(for film: Film) -> some View {
         VStack(alignment: .leading) {
             Text(film.plot)
             Divider()
             descriptionSection(title: "Directors", value: film.directors)
             Divider()
-            descriptionSection(title: "Stars", value: film.stars)
+            descriptionSection(title: "Writers", value: film.writers)
             Divider()
         }
     }
@@ -85,11 +122,43 @@ struct FilmDetailView: View {
     }
 }
 
-struct HorizontalPersonsScroll: View {
+struct ActorsHorizontalScroll: View {
     let title: String
+    let items: [Film.Actor]
     var body: some View {
-        LazyHStack {
-            
+        GeometryReader { geometry in
+            LazyHStack {
+                ForEach(items) { filmActor in
+                    infoView(for: filmActor, in: geometry)
+                }
+            }
+        }
+    }
+    
+    private func infoView(for filmActor: Film.Actor, in geometry: GeometryProxy) -> some View {
+        HStack(alignment: .top) {
+            image(imageURL: URL(string: filmActor.imageURL))
+                .frame(width: geometry.size.width * 0.4, height: geometry.size.height)
+            actorInfo(for: filmActor)
+        }
+    }
+    
+    private func image(imageURL: URL?) -> some View {
+        AsyncImage(url: imageURL) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .clipped()
+        } placeholder: {
+            ProgressView()
+        }
+    }
+    
+    private func actorInfo(for filmActor: Film.Actor) -> some View {
+        VStack {
+            Text(filmActor.name)
+            Text("as")
+            Text(filmActor.asCharacter)
         }
     }
 }

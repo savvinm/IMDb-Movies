@@ -13,7 +13,8 @@ public enum IMDbService {
     
     case inTheaters
     case comingSoon
-    case top250
+    case mostPopular
+    case title(id: String)
 }
 
 extension IMDbService: TargetType {
@@ -25,7 +26,8 @@ extension IMDbService: TargetType {
         switch self {
         case .inTheaters: return "/inTheaters/\(IMDbService.key)"
         case .comingSoon: return "/ComingSoon/\(IMDbService.key)"
-        case .top250: return "/Top250Movies/\(IMDbService.key)"
+        case .mostPopular: return "/MostPopularMovies/\(IMDbService.key)"
+        case .title(let id): return "/Title/\(IMDbService.key)/\(id)"
         }
     }
     

@@ -10,14 +10,24 @@ import Foundation
 struct Film: Identifiable {
     let id: String
     let title: String
-    let fullTitle: String
     let year: String
-    let releaseState: String
-    let poster: String
+    let posterURL: String
     let runtimeStr: String
     let plot: String
-    let genres: [String]
+    let genres: String
     let directors: String
-    let stars: String
+    let writers: String
+    let actors: [Actor]
     let contentRating: String
+    let imdbRating: String
+    let imdbRatingVotes: String
+    var userRating: Int?
+    let similars: [Poster]
+    
+    struct Actor: Identifiable {
+        let id: String
+        let imageURL: String
+        let name: String
+        let asCharacter: String
+    }
 }
