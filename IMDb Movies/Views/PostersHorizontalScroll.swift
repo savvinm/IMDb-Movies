@@ -21,7 +21,7 @@ struct PostersHorizontalScroll: View {
     }
     
     private func horizontalList(in geometry: GeometryProxy) -> some View {
-        ScrollView(.horizontal) {
+        ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 20) {
                 ForEach(items) { film in
                     filmNavigationLink(for: film)
@@ -36,6 +36,7 @@ struct PostersHorizontalScroll: View {
             NavigationLink(destination: { FilmDetailView(filmId: film.id) }, label: {
                 filmPreviev(for: film, in: geometry)
             })
+            .contentShape(TapShape())
             .buttonStyle(PlainButtonStyle())
         }
     }
@@ -81,7 +82,15 @@ struct PostersHorizontalScroll: View {
                 .foregroundColor(.white)
                 .opacity(0.85)
             Text(value)
+                .foregroundColor(.black)
+                .fontWeight(Font.Weight.semibold)
         }
         .cornerRadius(5)
+    }
+}
+
+struct TapShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        return Path(CGRect(x: 0, y: 0, width: rect.width, height: rect.height))
     }
 }

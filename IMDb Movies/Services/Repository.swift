@@ -76,11 +76,19 @@ struct FilmsRepository {
         return films
     }
     
+    private func parseAsCharacter(from value: String) -> String {
+        let blocks = value.components(separatedBy: "as ")
+        if blocks.count == 2 {
+            return blocks.first!
+        }
+        return value
+    }
+    
     private func handleFilmQuery(from response: Moya.Response) throws -> Film {
         let film = try response.map(IMDbFilm.self)
         var actors = [Film.Actor]()
         for star in film.actorList {
-            actors.append(Film.Actor(id: star.id, imageURL: star.image, name: star.name, asCharacter: star.asCharacter))
+            actors.append(Film.Actor(id: star.id, imageURL: star.image, name: star.name, asCharacter: parseAsCharacter(from: star.asCharacter)))
         }
         var similars = [Poster]()
         for similar in film.similars {
@@ -89,6 +97,7 @@ struct FilmsRepository {
         return Film(
             id: film.id,
             title: film.title,
+            fullTitle: film.fullTitle,
             year: film.year,
             posterURL: film.image,
             runtimeStr: film.runtimeStr,

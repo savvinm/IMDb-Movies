@@ -13,16 +13,22 @@ class FilmDetailViewModel: ObservableObject {
         case error(error: Error)
         case succes
     }
-    
-    @Published var film: Film?
-    var status: Statuses
+    private let filmId: String
+    @Published private(set) var film: Film?
+    private(set) var status: Statuses
     
     init(filmId: String) {
         status = .loading
-        getFilm(filmId: filmId)
+        self.filmId = filmId
     }
     
-    private func getFilm(filmId: String) {
+    func updateFilm() {
+        if film == nil {
+            getFilm()
+        }
+    }
+    
+    private func getFilm() {
         let repository = FilmsRepository()
         repository.title(movieId: filmId) { [weak self] film, error in
             guard let self = self else {

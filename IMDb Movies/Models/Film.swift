@@ -10,6 +10,7 @@ import Foundation
 struct Film: Identifiable {
     let id: String
     let title: String
+    let fullTitle: String
     let year: String
     let posterURL: String
     let runtimeStr: String

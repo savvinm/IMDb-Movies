@@ -33,6 +33,7 @@ struct IMDbPosterWithRating: Codable, Identifiable {
 struct IMDbFilm: Identifiable, Codable {
     let id: String
     let title: String
+    let fullTitle: String
     let year: String
     let image: String
     let runtimeStr: String
