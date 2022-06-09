@@ -17,7 +17,7 @@ class FilmsListViewModel: ObservableObject {
     }
     
     func fetchFilms() {
-        let repositiry = FilmsRepository()
+        let interactor = FilmsInteractor()
         /*repositiry.list(option: .inTheaters) { [weak self] films, error in
             if let error = error {
                 print(error)
@@ -34,7 +34,7 @@ class FilmsListViewModel: ObservableObject {
                 self?.comingSoon = films
             }
         }*/
-        repositiry.list(option: .mostPopular) { [weak self] films, error in
+        interactor.getPosters(option: .mostPopular) { [weak self] films, error in
             if let error = error {
                 print(error)
             }

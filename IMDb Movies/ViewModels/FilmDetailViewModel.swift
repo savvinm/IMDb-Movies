@@ -29,8 +29,8 @@ class FilmDetailViewModel: ObservableObject {
     }
     
     private func getFilm() {
-        let repository = FilmsRepository()
-        repository.title(movieId: filmId) { [weak self] film, error in
+        let interactor = FilmsInteractor()
+        interactor.getFilm(movieId: filmId) { [weak self] film, error in
             guard let self = self else {
                 return
             }

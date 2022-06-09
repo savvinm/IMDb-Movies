@@ -1,5 +1,5 @@
 //
-//  FIlmDetailView.swift
+//  FilmDetailView.swift
 //  IMDb Movies
 //
 //  Created by Maksim Savvin on 29.05.2022.
