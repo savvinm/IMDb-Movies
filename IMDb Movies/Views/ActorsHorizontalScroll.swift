@@ -36,7 +36,7 @@ struct ActorsHorizontalScroll: View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
                 image(imageURL: URL(string: filmActor.imageURL))
-                    .frame(width: geometry.size.width, height: geometry.size.height * 0.7)
+                    .frame(width: geometry.size.width, height: geometry.size.height * 0.65)
                 actorInfo(for: filmActor)
                 Spacer()
             }

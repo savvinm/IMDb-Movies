@@ -16,6 +16,7 @@ class FilmDetailViewModel: ObservableObject {
     private let filmId: String
     @Published private(set) var film: Film?
     private(set) var status: Statuses
+    let maximumRating = 10
     
     init(filmId: String) {
         status = .loading

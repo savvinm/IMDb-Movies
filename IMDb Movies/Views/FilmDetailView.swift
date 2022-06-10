@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FilmDetailView: View {
     @ObservedObject var filmDetailViewModel: FilmDetailViewModel
+    @State var showingRatingFrame = false
     
     init(filmId: String) {
         filmDetailViewModel = FilmDetailViewModel(filmId: filmId)
@@ -25,13 +26,13 @@ struct FilmDetailView: View {
                 Text(error.localizedDescription)
             }
         }
+        .padding()
         .onAppear { filmDetailViewModel.updateFilm() }
-            //.navigationBarHidden(true)
     }
     
     private func filmBody(for film: Film) -> some View {
         GeometryReader { geometry in
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     posterAndRating(for: film, in: geometry)
                     titleBlock(for: film)
@@ -39,8 +40,13 @@ struct FilmDetailView: View {
                     descriptionBlock(for: film, in: geometry)
                     PostersHorizontalScroll(title: "More like this", items: film.similars, geometry: geometry)
                 }
-                .padding()
-        }
+            }
+            .onTapGesture { showingRatingFrame = false }
+            .overlay(alignment: .center, content: {
+                if showingRatingFrame {
+                    RatingFrame(geometry: geometry, filmDetailViewModel: filmDetailViewModel, showingRatingFrame: $showingRatingFrame, rating: filmDetailViewModel.film?.userRating)
+                }
+            })
         }
         //.navigationBarTitleDisplayMode(.inline)
         .navigationTitle(film.fullTitle)
@@ -75,23 +81,27 @@ struct FilmDetailView: View {
                     .fontWeight(Font.Weight.semibold)
                 HStack {
                     Image(systemName: "star.fill").foregroundColor(.yellow)
-                    Text("\(film.imdbRating)/10")
+                    Text("\(film.imdbRating)/\(filmDetailViewModel.maximumRating)")
                 }
             }
+            .padding()
             VStack {
                 Text("Your rating")
                     .fontWeight(Font.Weight.semibold)
                 HStack {
                     if film.userRating != nil {
                         Image(systemName: "star.fill").foregroundColor(.blue)
-                        Text(String(film.userRating!))
+                        Text("\(film.userRating!)/\(filmDetailViewModel.maximumRating)")
                     } else {
                         Image(systemName: "star").foregroundColor(.blue)
-                        Button(action: {}, label: { Text("Rate") })
-                            .buttonStyle(PlainButtonStyle())
+                        Text("Rate")
                     }
                 }
             }
+            .onTapGesture {
+                showingRatingFrame = true
+            }
+            .padding()
         }
         .font(.headline)
     }
@@ -118,7 +128,7 @@ struct FilmDetailView: View {
             Text(film.plot).padding(.bottom)
             Divider()
             ActorsHorizontalScroll(title: "Top cast", items: film.actors)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.35)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.4)
                 .padding(.bottom)
             Divider()
             descriptionSection(title: "Directors", value: film.directors)
