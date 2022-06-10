@@ -8,7 +8,7 @@
 import Foundation
 import Moya
 
-class FilmsInteractor {
+final class FilmsInteractor {
     enum ListOption {
         case inTheaters
         case comingSoon

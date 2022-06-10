@@ -8,7 +8,7 @@
 import Foundation
 import Moya
 
-struct FilmsRepository {
+final class FilmsRepository {
     
     func fetchTitle(movieId: String, complitionHandler: @escaping (Moya.Response?, Error?) -> Void) {
         let provider = MoyaProvider<IMDbService>()

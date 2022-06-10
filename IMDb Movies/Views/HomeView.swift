@@ -9,9 +9,13 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var filmsViewModel = FilmsListViewModel()
+    @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
         GeometryReader { geometry in
             NavigationView {
+                Text("signOut").onTapGesture {
+                    authViewModel.signOut()
+                }
                 ScrollView {
                     filmsHorizontalLists(in: geometry)
                 }

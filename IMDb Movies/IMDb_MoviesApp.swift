@@ -10,9 +10,15 @@ import SwiftUI
 @main
 // swiftlint: disable all
 struct IMDb_MoviesApp: App {
+    @ObservedObject var authViewModel: AuthViewModel
+
+    init() {
+        authViewModel = AuthViewModel()
+    }
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            ContentView()
+                .environmentObject(authViewModel)
         }
     }
 }

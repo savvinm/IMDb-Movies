@@ -17,6 +17,7 @@ struct RatingFrame: View {
         VStack(alignment: .center) {
             Text(filmDetailViewModel.film?.title ?? "")
                 .padding()
+                .multilineTextAlignment(.center)
             ratingStars
                 .font(.headline)
             saveButton
@@ -25,7 +26,11 @@ struct RatingFrame: View {
         .overlay(alignment: .topTrailing, content: { closeButton })
         .font(.headline)
         .padding()
-        .background(Color.secondary)
+        .background(.thickMaterial)
+        .overlay {
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(.secondary, lineWidth: 4)
+        }
         .cornerRadius(15)
     }
     
@@ -34,7 +39,7 @@ struct RatingFrame: View {
             showingRatingFrame = false
         }, label: {
             Image(systemName: "x.circle")
-                .font(.headline)
+                .font(.system(size: 23))
         })
         .buttonStyle(PlainButtonStyle())
     }
@@ -47,7 +52,6 @@ struct RatingFrame: View {
             showingRatingFrame = false
         },label: {
             Text("Save")
-            
         })
         .buttonStyle(PlainButtonStyle())
     }

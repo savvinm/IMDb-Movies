@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class DBManager {
+final class DBManager {
     func getRating(for film: Film) -> Int? {
         let localRealm = try! Realm()
         let ratings = localRealm.objects(UserRating.self)
