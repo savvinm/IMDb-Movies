@@ -26,7 +26,6 @@ struct FilmDetailView: View {
                 Text(error.localizedDescription)
             }
         }
-        .padding()
         .onAppear { filmDetailViewModel.updateFilm() }
     }
     
@@ -48,7 +47,7 @@ struct FilmDetailView: View {
                 }
             })
         }
-        //.navigationBarTitleDisplayMode(.inline)
+        .padding()
         .navigationTitle(film.fullTitle)
     }
     

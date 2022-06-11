@@ -12,9 +12,12 @@ struct ContentView: View {
     
     var body: some View {
         switch authViewModel.state {
-        case .signedOut: LoginView()
-        case .signedIn: HomeView()
+        case .signedOut:
+            LoginView()
+        case .signedIn:
+            AppTabView()
+        case .loading:
+            ProgressView()
         }
     }
 }
-

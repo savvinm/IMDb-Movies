@@ -8,6 +8,12 @@
 import Foundation
 
 class FilmsListViewModel: ObservableObject {
+    enum Statuses {
+        case loading
+        case error(error: Error)
+        case success
+    }
+    @Published private(set) var status: Statuses = .loading
     @Published private(set) var inTheaters = [Poster]()
     @Published private(set) var comingSoon = [Poster]()
     @Published private(set) var mostPopular = [Poster]()
@@ -39,7 +45,10 @@ class FilmsListViewModel: ObservableObject {
                 print(error)
             }
             if let films = films {
-                self?.mostPopular = films
+                DispatchQueue.main.async {
+                    self?.mostPopular = films
+                    self?.status = .success
+                }
             }
         }
     }

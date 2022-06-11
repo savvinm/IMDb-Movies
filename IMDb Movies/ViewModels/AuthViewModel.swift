@@ -13,20 +13,23 @@ class AuthViewModel: ObservableObject {
     enum SignInState {
         case signedIn
         case signedOut
+        case loading
     }
     
     private let clientId = "180084617862-tnl35nlvefv7innflt1a53isgi1o8nae.apps.googleusercontent.com"
-    @Published var state: SignInState = .signedOut
+    @Published private(set) var state: SignInState = .loading
     
     init() {
         if GIDSignIn.sharedInstance.hasPreviousSignIn() {
-            GIDSignIn.sharedInstance.restorePreviousSignIn { [unowned self] user, error in
+            GIDSignIn.sharedInstance.restorePreviousSignIn { [unowned self] _, error in
                 if let error = error {
                     print(error.localizedDescription)
                     return
                 }
                 state = .signedIn
             }
+        } else {
+            state = .signedOut
         }
     }
     
@@ -38,7 +41,7 @@ class AuthViewModel: ObservableObject {
             return
         }
         let config = GIDConfiguration(clientID: clientId)
-        GIDSignIn.sharedInstance.signIn(with: config, presenting: rootViewController) { [unowned self] user, error in
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: rootViewController) { [unowned self] _, error in
             if let error = error {
                 print(error.localizedDescription)
                 return
@@ -50,5 +53,12 @@ class AuthViewModel: ObservableObject {
     func signOut() {
         GIDSignIn.sharedInstance.signOut()
         state = .signedOut
+    }
+    
+    func getUserName() -> String? {
+        if state == .signedIn {
+            return GIDSignIn.sharedInstance.currentUser?.profile?.givenName
+        }
+        return nil
     }
 }

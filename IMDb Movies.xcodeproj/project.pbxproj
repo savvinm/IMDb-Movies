@@ -12,10 +12,11 @@
 		B578AB84285247680039A5FF /* FilmsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB83285247680039A5FF /* FilmsInteractor.swift */; };
 		B578AB862852559B0039A5FF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB852852559B0039A5FF /* Extensions.swift */; };
 		B578AB88285274A00039A5FF /* RatingFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB87285274A00039A5FF /* RatingFrame.swift */; };
-		B578AB8A2853A6900039A5FF /* VKDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB892853A6900039A5FF /* VKDelegate.swift */; };
 		B578AB8C2853AFEA0039A5FF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB8B2853AFEA0039A5FF /* LoginView.swift */; };
 		B578AB8F2853D8C00039A5FF /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB8E2853D8C00039A5FF /* AuthViewModel.swift */; };
 		B578AB912853E0C50039A5FF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB902853E0C50039A5FF /* ContentView.swift */; };
+		B579662F28547A9000A01FF4 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B579662E28547A9000A01FF4 /* AccountView.swift */; };
+		B58C7BCE28547BD50097501C /* AppTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C7BCD28547BD50097501C /* AppTabView.swift */; };
 		B5C0B33D2842ABAB00A1EBBE /* IMDb_MoviesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B33C2842ABAB00A1EBBE /* IMDb_MoviesApp.swift */; };
 		B5C0B33F2842ABAB00A1EBBE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B33E2842ABAB00A1EBBE /* HomeView.swift */; };
 		B5C0B3412842ABAF00A1EBBE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5C0B3402842ABAF00A1EBBE /* Assets.xcassets */; };
@@ -40,11 +41,12 @@
 		B578AB83285247680039A5FF /* FilmsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsInteractor.swift; sourceTree = "<group>"; };
 		B578AB852852559B0039A5FF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B578AB87285274A00039A5FF /* RatingFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingFrame.swift; sourceTree = "<group>"; };
-		B578AB892853A6900039A5FF /* VKDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKDelegate.swift; sourceTree = "<group>"; };
 		B578AB8B2853AFEA0039A5FF /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B578AB8D2853D42C0039A5FF /* IMDb-Movies-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "IMDb-Movies-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B578AB8E2853D8C00039A5FF /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		B578AB902853E0C50039A5FF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B579662E28547A9000A01FF4 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		B58C7BCD28547BD50097501C /* AppTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabView.swift; sourceTree = "<group>"; };
 		B5C0B3392842ABAB00A1EBBE /* IMDb Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IMDb Movies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5C0B33C2842ABAB00A1EBBE /* IMDb_MoviesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMDb_MoviesApp.swift; sourceTree = "<group>"; };
 		B5C0B33E2842ABAB00A1EBBE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -138,11 +140,10 @@
 			isa = PBXGroup;
 			children = (
 				B5C0B3602847682800A1EBBE /* DBManager.swift */,
+				B578AB852852559B0039A5FF /* Extensions.swift */,
+				B578AB83285247680039A5FF /* FilmsInteractor.swift */,
 				B5C0B3582844DA2A00A1EBBE /* IMDbService.swift */,
 				B5C0B35C2846AF0E00A1EBBE /* Repository.swift */,
-				B578AB83285247680039A5FF /* FilmsInteractor.swift */,
-				B578AB852852559B0039A5FF /* Extensions.swift */,
-				B578AB892853A6900039A5FF /* VKDelegate.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -150,13 +151,15 @@
 		B5C0B34D2842B24300A1EBBE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B579662E28547A9000A01FF4 /* AccountView.swift */,
 				B57632E8284A334C0058FB3B /* ActorsHorizontalScroll.swift */,
+				B58C7BCD28547BD50097501C /* AppTabView.swift */,
+				B578AB902853E0C50039A5FF /* ContentView.swift */,
 				B5C0B3562844130600A1EBBE /* FilmDetailView.swift */,
 				B5C0B33E2842ABAB00A1EBBE /* HomeView.swift */,
+				B578AB8B2853AFEA0039A5FF /* LoginView.swift */,
 				B5C0B3672849476E00A1EBBE /* PostersHorizontalScroll.swift */,
 				B578AB87285274A00039A5FF /* RatingFrame.swift */,
-				B578AB8B2853AFEA0039A5FF /* LoginView.swift */,
-				B578AB902853E0C50039A5FF /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -175,9 +178,9 @@
 		B5C0B34F2842B2FD00A1EBBE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				B578AB8E2853D8C00039A5FF /* AuthViewModel.swift */,
 				B5C0B3652849332600A1EBBE /* FilmDetailViewModel.swift */,
 				B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */,
-				B578AB8E2853D8C00039A5FF /* AuthViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -306,7 +309,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#if which swiftlint >/dev/null; then\n#    swiftlint\n#else \n#  echo \"SwiftLint not installed\"\n#fi\n";
+			shellScript = "#if which swiftlint >/dev/null; then\n#    swiftlint\n#else \n#  echo \"SwiftLint not installed\"\n#fi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -319,9 +322,10 @@
 				B5C0B35F28475FFD00A1EBBE /* RealmModels.swift in Sources */,
 				B5C0B3682849476E00A1EBBE /* PostersHorizontalScroll.swift in Sources */,
 				B5C0B3552842B77E00A1EBBE /* FilmsListViewModel.swift in Sources */,
+				B58C7BCE28547BD50097501C /* AppTabView.swift in Sources */,
+				B579662F28547A9000A01FF4 /* AccountView.swift in Sources */,
 				B5C0B3572844130600A1EBBE /* FilmDetailView.swift in Sources */,
 				B5C0B33F2842ABAB00A1EBBE /* HomeView.swift in Sources */,
-				B578AB8A2853A6900039A5FF /* VKDelegate.swift in Sources */,
 				B5C0B35D2846AF0E00A1EBBE /* Repository.swift in Sources */,
 				B578AB912853E0C50039A5FF /* ContentView.swift in Sources */,
 				B5C0B3612847682800A1EBBE /* DBManager.swift in Sources */,

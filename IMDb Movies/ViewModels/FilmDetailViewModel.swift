@@ -14,8 +14,8 @@ class FilmDetailViewModel: ObservableObject {
         case succes
     }
     private let filmId: String
-    @Published private(set) var film: Film?
-    private(set) var status: Statuses
+    private(set) var film: Film?
+    @Published private(set) var status: Statuses
     let maximumRating = 10
     
     init(filmId: String) {
@@ -36,14 +36,17 @@ class FilmDetailViewModel: ObservableObject {
                 return
             }
             if let error = error {
-                self.status = .error(error: error)
-                self.objectWillChange.send()
+                DispatchQueue.main.async {
+                    self.status = .error(error: error)
+                }
                 return
             }
             if var film = film {
-                film.userRating = self.getRating(for: film)
-                self.status = .succes
-                self.film = film
+                DispatchQueue.main.async {
+                    film.userRating = self.getRating(for: film)
+                    self.status = .succes
+                    self.film = film
+                }
             }
         }
     }
@@ -60,5 +63,6 @@ class FilmDetailViewModel: ObservableObject {
         let dbManager = DBManager()
         dbManager.setRating(for: film!, rating: rating)
         film!.userRating = rating
+        objectWillChange.send()
     }
 }

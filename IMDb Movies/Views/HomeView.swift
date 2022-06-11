@@ -9,18 +9,25 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var filmsViewModel = FilmsListViewModel()
-    @EnvironmentObject var authViewModel: AuthViewModel
+
     var body: some View {
+        switch filmsViewModel.status {
+        case .loading:
+            ProgressView()
+        case .success:
+            filmsBody
+        case .error(let error):
+            Text(error.localizedDescription)
+        }
+    }
+    
+    private var filmsBody: some View {
         GeometryReader { geometry in
             NavigationView {
-                Text("signOut").onTapGesture {
-                    authViewModel.signOut()
-                }
                 ScrollView {
                     filmsHorizontalLists(in: geometry)
                 }
                 .navigationBarHidden(true)
-                //.onAppear { filmsViewModel.fetchFilms() }
             }
         }
     }
