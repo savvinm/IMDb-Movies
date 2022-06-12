@@ -11,7 +11,7 @@ class FilmsListViewModel: ObservableObject {
     enum Statuses {
         case loading
         case error(error: Error)
-        case success
+        case succes
     }
     @Published private(set) var status: Statuses = .loading
     @Published private(set) var inTheaters = [Poster]()
@@ -24,22 +24,24 @@ class FilmsListViewModel: ObservableObject {
     
     func fetchFilms() {
         let interactor = FilmsInteractor()
-        /*repositiry.list(option: .inTheaters) { [weak self] films, error in
+        interactor.getPosters(option: .inTheaters) { [weak self] films, error in
             if let error = error {
                 print(error)
             }
             if let films = films {
                 self?.inTheaters = films
+                self?.status = .succes
             }
         }
-        repositiry.list(option: .comingSoon) { [weak self] films, error in
+        interactor.getPosters(option: .comingSoon) { [weak self] films, error in
             if let error = error {
                 print(error)
             }
             if let films = films {
                 self?.comingSoon = films
+                self?.status = .succes
             }
-        }*/
+        }
         interactor.getPosters(option: .mostPopular) { [weak self] films, error in
             if let error = error {
                 print(error)
@@ -47,7 +49,7 @@ class FilmsListViewModel: ObservableObject {
             if let films = films {
                 DispatchQueue.main.async {
                     self?.mostPopular = films
-                    self?.status = .success
+                    self?.status = .succes
                 }
             }
         }

@@ -37,7 +37,8 @@ struct FilmDetailView: View {
                     titleBlock(for: film)
                     genresBlock(for: film)
                     descriptionBlock(for: film, in: geometry)
-                    PostersHorizontalScroll(title: "More like this", items: film.similars, geometry: geometry)
+                    PostersHorizontalScroll(title: "More like this", items: film.similars)
+                        .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
                 }
             }
             .onTapGesture { showingRatingFrame = false }

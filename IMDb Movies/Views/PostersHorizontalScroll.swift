@@ -10,13 +10,14 @@ import SwiftUI
 struct PostersHorizontalScroll: View {
     let title: String
     let items: [Poster]
-    let geometry: GeometryProxy
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
-                .font(.title)
-                .fontWeight(Font.Weight.semibold)
-            horizontalList(in: geometry)
+        GeometryReader { geometry in
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.title)
+                    .fontWeight(Font.Weight.semibold)
+                horizontalList(in: geometry)
+            }
         }
     }
     
@@ -25,7 +26,7 @@ struct PostersHorizontalScroll: View {
             LazyHStack(spacing: 20) {
                 ForEach(items) { film in
                     filmNavigationLink(for: film)
-                        .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.35)
+                        .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.8)
                 }
             }
         }
@@ -83,7 +84,7 @@ struct PostersHorizontalScroll: View {
                 .opacity(0.85)
             Text(value)
                 .foregroundColor(.black)
-                .fontWeight(Font.Weight.semibold)
+                .fontWeight(Font.Weight.medium)
         }
         .cornerRadius(5)
     }

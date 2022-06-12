@@ -32,6 +32,8 @@ final class FilmsRepository {
             moyaOption = .comingSoon
         case .mostPopular:
             moyaOption = .mostPopular
+        case .search(let searchQuery):
+            moyaOption = .search(searchQuery: searchQuery)
         }
         provider.request(moyaOption) { result in
             switch result {

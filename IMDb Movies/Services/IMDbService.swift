@@ -15,6 +15,7 @@ public enum IMDbService {
     case comingSoon
     case mostPopular
     case title(id: String)
+    case search(searchQuery: String)
 }
 
 extension IMDbService: TargetType {
@@ -28,6 +29,7 @@ extension IMDbService: TargetType {
         case .comingSoon: return "/ComingSoon/\(IMDbService.key)"
         case .mostPopular: return "/MostPopularMovies/\(IMDbService.key)"
         case .title(let id): return "/Title/\(IMDbService.key)/\(id)"
+        case .search(let searchQuery): return "/SearchMovie/\(IMDbService.key)/\(searchQuery)"
         }
     }
     

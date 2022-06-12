@@ -34,8 +34,8 @@ struct AccountView: View {
     private var userInfoBlock: some View {
         Section {
             HStack {
-                Text("Hello \(authViewModel.getUserName() ?? "")!")
-                    .padding()
+                Image(systemName: "person.circle")
+                Text("Hello, \(authViewModel.getUserName() ?? "")!")
                 Spacer()
             }
             signOutButton

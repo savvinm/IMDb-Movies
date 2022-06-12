@@ -14,7 +14,7 @@ struct HomeView: View {
         switch filmsViewModel.status {
         case .loading:
             ProgressView()
-        case .success:
+        case .succes:
             filmsBody
         case .error(let error):
             Text(error.localizedDescription)
@@ -22,8 +22,8 @@ struct HomeView: View {
     }
     
     private var filmsBody: some View {
-        GeometryReader { geometry in
-            NavigationView {
+        NavigationView {
+            GeometryReader { geometry in
                 ScrollView {
                     filmsHorizontalLists(in: geometry)
                 }
@@ -34,9 +34,12 @@ struct HomeView: View {
     
     private func filmsHorizontalLists(in geometry: GeometryProxy) -> some View {
         VStack {
-            PostersHorizontalScroll(title: "In theaters", items: filmsViewModel.inTheaters, geometry: geometry)
-            PostersHorizontalScroll(title: "Coming soon", items: filmsViewModel.comingSoon, geometry: geometry)
-            PostersHorizontalScroll(title: "Popular now", items: filmsViewModel.mostPopular, geometry: geometry)
+            PostersHorizontalScroll(title: "In theaters", items: filmsViewModel.inTheaters)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
+            PostersHorizontalScroll(title: "Coming soon", items: filmsViewModel.comingSoon)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
+            PostersHorizontalScroll(title: "Popular now", items: filmsViewModel.mostPopular)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
         }
         .padding()
     }

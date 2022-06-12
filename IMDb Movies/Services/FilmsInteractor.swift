@@ -13,6 +13,7 @@ final class FilmsInteractor {
         case inTheaters
         case comingSoon
         case mostPopular
+        case search(searchQuery: String)
     }
     enum InteractorErrors: Error {
         case mappingError

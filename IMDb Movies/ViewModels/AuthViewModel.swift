@@ -9,7 +9,6 @@ import Foundation
 import GoogleSignIn
 
 class AuthViewModel: ObservableObject {
-    
     enum SignInState {
         case signedIn
         case signedOut

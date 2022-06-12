@@ -11,6 +11,7 @@ struct AppTabView: View {
     var body: some View {
         TabView {
             homeTab
+            searchTab
             accountTab
         }
     }
@@ -20,6 +21,15 @@ struct AppTabView: View {
             VStack {
                 Image(systemName: "film")
                 Text("Movies")
+            }
+        }
+    }
+    
+    private var searchTab: some View {
+        SearchView().tabItem {
+            VStack {
+                Image(systemName: "text.magnifyingglass")
+                Text("Search")
             }
         }
     }
