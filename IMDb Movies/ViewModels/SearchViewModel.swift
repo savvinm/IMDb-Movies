@@ -12,8 +12,9 @@ class SearchViewModel: ObservableObject {
         case empty
         case something
         case start
+        case searching
     }
-    @Published var searchStatus: SearchStatus = .start
+    @Published private(set) var searchStatus: SearchStatus = .start
     @Published var searchQuery = "" {
         didSet {
             if searchQuery != oldValue {
@@ -21,15 +22,29 @@ class SearchViewModel: ObservableObject {
             }
         }
     }
-    @Published var searchFieldIsFocused = false
+    @Published private(set) var results = [Poster]()
     
     private func updateSearch() {
-        if searchQuery == "" {
+        results = []
+        guard searchQuery != "" else {
             searchStatus = .start
             return
-        } else {
-            searchStatus = .empty
+        }
+        searchStatus = .searching
+        let interactor = FilmsInteractor()
+        interactor.searchFilms(searchQuery: searchQuery) { [weak self] query, films, error in
+            guard query == self?.searchQuery else {
+                return
+            }
+            if let error = error {
+                print(error)
+            }
+            if let films = films {
+                DispatchQueue.main.async {
+                    self?.results = films
+                    self?.searchStatus = films.isEmpty ? .empty : .something
+                }
+            }
         }
     }
-    
 }

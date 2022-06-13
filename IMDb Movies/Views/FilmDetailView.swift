@@ -19,7 +19,7 @@ struct FilmDetailView: View {
         VStack(alignment: .center) {
             switch filmDetailViewModel.status {
             case .succes:
-                filmBody(for: filmDetailViewModel.film!)
+                filmView(for: filmDetailViewModel.film!)
             case .loading:
                 ProgressView()
             case .error(let error):
@@ -29,17 +29,10 @@ struct FilmDetailView: View {
         .onAppear { filmDetailViewModel.updateFilm() }
     }
     
-    private func filmBody(for film: Film) -> some View {
+    private func filmView(for film: Film) -> some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading) {
-                    posterAndRating(for: film, in: geometry)
-                    titleBlock(for: film)
-                    genresBlock(for: film)
-                    descriptionBlock(for: film, in: geometry)
-                    PostersHorizontalScroll(title: "More like this", items: film.similars)
-                        .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
-                }
+                filmBody(for: film, in: geometry)
             }
             .onTapGesture { showingRatingFrame = false }
             .overlay(alignment: .center, content: {
@@ -50,6 +43,17 @@ struct FilmDetailView: View {
         }
         .padding()
         .navigationTitle(film.fullTitle)
+    }
+    
+    private func filmBody(for film: Film, in geometry: GeometryProxy) -> some View {
+        VStack(alignment: .leading) {
+            posterAndRating(for: film, in: geometry)
+            titleBlock(for: film)
+            genresBlock(for: film)
+            descriptionBlock(for: film, in: geometry)
+            PostersHorizontalScroll(title: "More like this", items: film.similars)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.5)
+        }
     }
     
     private func posterAndRating(for film: Film, in geometry: GeometryProxy) -> some View {
@@ -128,7 +132,7 @@ struct FilmDetailView: View {
             Text(film.plot).padding(.bottom)
             Divider()
             ActorsHorizontalScroll(title: "Top cast", items: film.actors)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.4)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
                 .padding(.bottom)
             Divider()
             descriptionSection(title: "Directors", value: film.directors)

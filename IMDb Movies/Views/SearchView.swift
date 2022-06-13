@@ -14,16 +14,18 @@ struct SearchView: View {
     var body: some View {
         NavigationView {
             VStack {
-                searchField
-                    .font(.headline)
-                    .padding(.leading)
-                    .frame(maxWidth: .infinity, idealHeight: 50)
-                    .background(.thickMaterial)
-                    .cornerRadius(10)
+                VStack {
+                    searchField
+                        .font(.headline)
+                        .padding(.leading)
+                        .frame(maxWidth: .infinity, idealHeight: 50)
+                        .background(.thickMaterial)
+                        .cornerRadius(10)
+                }
+                .padding()
                 resultBlock
             }
             .padding(.top)
-            .padding()
             .navigationBarHidden(true)
         }
     }
@@ -37,10 +39,18 @@ struct SearchView: View {
                 emptyMessage
             case .something:
                 resultScroll
+            case .searching:
+                searchingView
             }
         }
-        .onTapGesture {
-            searchFieldIsFocused = false
+        .onTapGesture { searchFieldIsFocused = false }
+    }
+    
+    private var searchingView: some View {
+        VStack {
+            Spacer()
+            ProgressView()
+            Spacer()
         }
     }
     
@@ -67,8 +77,14 @@ struct SearchView: View {
     }
     
     private var resultScroll: some View {
-        ScrollView {
-            
+        GeometryReader { geometry in
+            ScrollView {
+                ForEach(searchViewModel.results) { poster in
+                    InListPosterView(poster: poster)
+                        .frame(width: geometry.size.width, height: geometry.size.height * 0.3)
+                        .padding()
+                }
+            }
         }
     }
     
@@ -76,19 +92,15 @@ struct SearchView: View {
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.secondary)
-            TextField("Search", text: $searchViewModel.searchQuery, onEditingChanged: { (isBegin) in
-                withAnimation(.easeInOut) {
-                    searchViewModel.searchFieldIsFocused = isBegin
+            TextField("Search", text: $searchViewModel.searchQuery)
+                .disableAutocorrection(true)
+                .focused($searchFieldIsFocused)
+                .frame(height: 50)
+                .overlay(alignment: .trailing) {
+                    if searchViewModel.searchQuery != ""{
+                        Button(action: { searchViewModel.searchQuery = "" }, label: { clearButtonIcon })
+                    }
                 }
-            })
-            .disableAutocorrection(true)
-            .focused($searchFieldIsFocused)
-            .frame(height: 50)
-            .overlay(alignment: .trailing) {
-                if searchViewModel.searchQuery != ""{
-                    Button(action: { searchViewModel.searchQuery = "" }, label: { clearButtonIcon })
-                }
-            }
         }
         .padding(.leading)
         .font(.headline)

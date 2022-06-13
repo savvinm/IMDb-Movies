@@ -34,6 +34,7 @@
 		B5C0B3642848C14900A1EBBE /* Poster.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3632848C14900A1EBBE /* Poster.swift */; };
 		B5C0B3662849332600A1EBBE /* FilmDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3652849332600A1EBBE /* FilmDetailViewModel.swift */; };
 		B5C0B3682849476E00A1EBBE /* PostersHorizontalScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0B3672849476E00A1EBBE /* PostersHorizontalScroll.swift */; };
+		B5F8B9B7285749C100C59347 /* InListPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F8B9B6285749C100C59347 /* InListPosterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		B5C0B3632848C14900A1EBBE /* Poster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poster.swift; sourceTree = "<group>"; };
 		B5C0B3652849332600A1EBBE /* FilmDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailViewModel.swift; sourceTree = "<group>"; };
 		B5C0B3672849476E00A1EBBE /* PostersHorizontalScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostersHorizontalScroll.swift; sourceTree = "<group>"; };
+		B5F8B9B6285749C100C59347 /* InListPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InListPosterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,15 +157,13 @@
 		B5C0B34D2842B24300A1EBBE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B5F8B9B528572E3200C59347 /* Shared */,
 				B579662E28547A9000A01FF4 /* AccountView.swift */,
-				B57632E8284A334C0058FB3B /* ActorsHorizontalScroll.swift */,
 				B58C7BCD28547BD50097501C /* AppTabView.swift */,
 				B578AB902853E0C50039A5FF /* ContentView.swift */,
 				B5C0B3562844130600A1EBBE /* FilmDetailView.swift */,
 				B5C0B33E2842ABAB00A1EBBE /* HomeView.swift */,
 				B578AB8B2853AFEA0039A5FF /* LoginView.swift */,
-				B5C0B3672849476E00A1EBBE /* PostersHorizontalScroll.swift */,
-				B578AB87285274A00039A5FF /* RatingFrame.swift */,
 				B5AEFCA12855CE6C00AC6B5F /* SearchView.swift */,
 			);
 			path = Views;
@@ -189,6 +189,17 @@
 				B5AEFCC72856642100AC6B5F /* SearchViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B5F8B9B528572E3200C59347 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B57632E8284A334C0058FB3B /* ActorsHorizontalScroll.swift */,
+				B5C0B3672849476E00A1EBBE /* PostersHorizontalScroll.swift */,
+				B578AB87285274A00039A5FF /* RatingFrame.swift */,
+				B5F8B9B6285749C100C59347 /* InListPosterView.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -333,6 +344,7 @@
 				B5C0B3572844130600A1EBBE /* FilmDetailView.swift in Sources */,
 				B5C0B33F2842ABAB00A1EBBE /* HomeView.swift in Sources */,
 				B5C0B35D2846AF0E00A1EBBE /* Repository.swift in Sources */,
+				B5F8B9B7285749C100C59347 /* InListPosterView.swift in Sources */,
 				B578AB912853E0C50039A5FF /* ContentView.swift in Sources */,
 				B5C0B3612847682800A1EBBE /* DBManager.swift in Sources */,
 				B578AB84285247680039A5FF /* FilmsInteractor.swift in Sources */,

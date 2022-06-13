@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct IMDbPosterQuery: Codable {
-    let items: [IMDbPoster]
-    let errorMessage: String
+struct IMDbSearchResultQuery: Codable {
+    let expression: String
+    let results: [IMDbSearchPoster]
 }
 
 struct IMDbRatingPosterQuery: Codable {
@@ -17,10 +17,11 @@ struct IMDbRatingPosterQuery: Codable {
     let errorMessage: String
 }
 
-struct IMDbPoster: Codable, Identifiable {
+struct IMDbSearchPoster: Codable, Identifiable {
     let id: String
     let title: String
     let image: String
+    let description: String
 }
 
 struct IMDbPosterWithRating: Codable, Identifiable {

@@ -12,4 +12,5 @@ struct Poster: Identifiable {
     let title: String
     let imageURL: String
     let imdbRating: String?
+    let description: String?
 }

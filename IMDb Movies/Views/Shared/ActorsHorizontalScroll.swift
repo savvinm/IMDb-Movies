@@ -26,7 +26,7 @@ struct ActorsHorizontalScroll: View {
             LazyHStack(spacing: 20) {
                 ForEach(items) { filmActor in
                     infoView(for: filmActor)
-                        .frame(width: geometry.size.width * 0.25, height: geometry.size.height * 0.8)
+                        .frame(width: geometry.size.width * 0.25, height: geometry.size.height * 0.85)
                 }
             }
         }
@@ -36,7 +36,7 @@ struct ActorsHorizontalScroll: View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
                 image(imageURL: URL(string: filmActor.imageURL))
-                    .frame(width: geometry.size.width, height: geometry.size.height * 0.65)
+                    .frame(width: geometry.size.width, height: geometry.size.height * 0.6)
                 actorInfo(for: filmActor)
                 Spacer()
             }

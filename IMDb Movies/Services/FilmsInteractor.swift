@@ -20,6 +20,21 @@ final class FilmsInteractor {
     }
     private let repository = FilmsRepository()
     
+    func searchFilms(searchQuery: String, complitionHandler: @escaping (String, [Poster]?, Error?) -> Void) {
+        repository.fetchList(option: .search(searchQuery: searchQuery)) { [self] response, error in
+            guard let response = response else {
+                complitionHandler(searchQuery, nil, error)
+                return
+            }
+            do {
+                let films = try self.handleSearchResultQuery(from: response)
+                complitionHandler(searchQuery, films, nil)
+            } catch {
+                complitionHandler(searchQuery, nil, InteractorErrors.mappingError)
+            }
+        }
+    }
+    
     func getPosters(option: ListOption, complitionHandler: @escaping ([Poster]?, Error?) -> Void) {
         repository.fetchList(option: option) { response, error in
             guard let response = response else {
@@ -54,17 +69,16 @@ final class FilmsInteractor {
         let query = try response.map(IMDbRatingPosterQuery.self)
         var films = [Poster]()
         for item in query.items {
-            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: item.imDbRating))
+            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: item.imDbRating, description: nil))
         }
         return films
     }
     
-    private func handlePosterQuery(from response: Moya.Response) throws -> [Poster] {
-        let query = try response.map(IMDbPosterQuery.self)
+    private func handleSearchResultQuery(from response: Moya.Response) throws -> [Poster] {
+        let query = try response.map(IMDbSearchResultQuery.self)
         var films = [Poster]()
-        for item in query.items {
-            //films.append(createFilm(from: item))
-            print(item.title)
+        for item in query.results {
+            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: nil, description: item.description))
         }
         return films
     }
@@ -85,7 +99,7 @@ final class FilmsInteractor {
         }
         var similars = [Poster]()
         for similar in film.similars {
-            similars.append(Poster(id: similar.id, title: similar.title, imageURL: similar.image, imdbRating: similar.imDbRating))
+            similars.append(Poster(id: similar.id, title: similar.title, imageURL: similar.image, imdbRating: similar.imDbRating, description: nil))
         }
         return Film(
             id: film.id,

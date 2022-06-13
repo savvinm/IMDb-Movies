@@ -26,7 +26,7 @@ struct PostersHorizontalScroll: View {
             LazyHStack(spacing: 20) {
                 ForEach(items) { film in
                     filmNavigationLink(for: film)
-                        .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.8)
+                        .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.85)
                 }
             }
         }
@@ -45,7 +45,7 @@ struct PostersHorizontalScroll: View {
     private func filmPreviev(for film: Poster, in geometry: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
             imageWithRating(for: film)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.7)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.65)
             Text(film.title)
                 .font(.headline)
                 .multilineTextAlignment(.leading)
