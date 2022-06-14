@@ -26,7 +26,7 @@ struct PostersHorizontalScroll: View {
             LazyHStack(spacing: 20) {
                 ForEach(items) { film in
                     filmNavigationLink(for: film)
-                        .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.85)
+                        .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.8)
                 }
             }
         }
@@ -71,7 +71,7 @@ struct PostersHorizontalScroll: View {
                 if film.imdbRating != nil && film.imdbRating != "" {
                     ratingIcon(value: film.imdbRating!)
                         .frame(width: geometry.size.width * 0.25, height: geometry.size.width * 0.25)
-                        .padding(3)
+                        .padding(4)
                 }
             }
         }

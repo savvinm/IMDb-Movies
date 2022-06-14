@@ -33,14 +33,33 @@ struct AccountView: View {
     
     private var userInfoBlock: some View {
         Section {
-            HStack {
-                Image(systemName: "person.circle")
-                Text("Hello, \(authViewModel.getUserName() ?? "")!")
+            HStack(alignment: .center) {
+                userImage
+                    .padding()
+                VStack(alignment: .leading) {
+                    Text("Hello, \(authViewModel.getUserName() ?? "")!")
+                    Text(authViewModel.getUserEmail() ?? "")
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                }
                 Spacer()
             }
             signOutButton
         }
         .font(.headline)
+    }
+    
+    private var userImage: some View {
+        AsyncImage(url: authViewModel.getUserImageURL()) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: UIScreen.main.bounds.size.width * 0.12, height: UIScreen.main.bounds.size.width * 0.12)
+                .clipShape(Circle())
+        } placeholder: {
+            ProgressView()
+        }
+        .frame(width: UIScreen.main.bounds.size.width * 0.12, height: UIScreen.main.bounds.size.width * 0.12)
     }
     
     private var signOutButton: some View {

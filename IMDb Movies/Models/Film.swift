@@ -29,6 +29,5 @@ struct Film: Identifiable {
         let id: String
         let imageURL: String
         let name: String
-        let asCharacter: String
     }
 }

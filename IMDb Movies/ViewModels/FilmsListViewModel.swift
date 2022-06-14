@@ -17,14 +17,14 @@ class FilmsListViewModel: ObservableObject {
     @Published private(set) var inTheaters = [Poster]()
     @Published private(set) var comingSoon = [Poster]()
     @Published private(set) var mostPopular = [Poster]()
+    private let interactor = FilmsInteractor()
     
     init() {
         fetchFilms()
     }
     
     func fetchFilms() {
-        let interactor = FilmsInteractor()
-        interactor.getPosters(option: .inTheaters) { [weak self] films, error in
+        /*interactor.getPosters(option: .inTheaters) { [weak self] films, error in
             if let error = error {
                 print(error)
             }
@@ -41,7 +41,7 @@ class FilmsListViewModel: ObservableObject {
                 self?.comingSoon = films
                 self?.status = .succes
             }
-        }
+        }*/
         interactor.getPosters(option: .mostPopular) { [weak self] films, error in
             if let error = error {
                 print(error)

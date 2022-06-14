@@ -60,4 +60,18 @@ class AuthViewModel: ObservableObject {
         }
         return nil
     }
+    
+    func getUserEmail() -> String? {
+        if state == .signedIn {
+            return GIDSignIn.sharedInstance.currentUser?.profile?.email
+        }
+        return nil
+    }
+    
+    func getUserImageURL() -> URL? {
+        if state == .signedIn {
+            return GIDSignIn.sharedInstance.currentUser?.profile?.imageURL(withDimension: 100)
+        }
+        return nil
+    }
 }

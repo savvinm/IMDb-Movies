@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Moya
 
 final class FilmsInteractor {
     enum ListOption {
@@ -15,107 +14,37 @@ final class FilmsInteractor {
         case mostPopular
         case search(searchQuery: String)
     }
-    enum InteractorErrors: Error {
-        case mappingError
-    }
     private let repository = FilmsRepository()
+    private let dbManager = DBManager()
     
     func searchFilms(searchQuery: String, complitionHandler: @escaping (String, [Poster]?, Error?) -> Void) {
-        repository.fetchList(option: .search(searchQuery: searchQuery)) { [self] response, error in
-            guard let response = response else {
-                complitionHandler(searchQuery, nil, error)
-                return
-            }
-            do {
-                let films = try self.handleSearchResultQuery(from: response)
-                complitionHandler(searchQuery, films, nil)
-            } catch {
-                complitionHandler(searchQuery, nil, InteractorErrors.mappingError)
-            }
+        repository.fetchList(option: .search(searchQuery: searchQuery)) { films, error in
+            complitionHandler(searchQuery, films, error)
         }
     }
     
     func getPosters(option: ListOption, complitionHandler: @escaping ([Poster]?, Error?) -> Void) {
-        repository.fetchList(option: option) { response, error in
-            guard let response = response else {
-                complitionHandler(nil, error)
-                return
-            }
-            do {
-                let films = try self.handleRatingPosterQuery(from: response)
-                complitionHandler(films, nil)
-            } catch {
-                complitionHandler(nil, InteractorErrors.mappingError)
-            }
+        repository.fetchList(option: option) {films, error in
+            complitionHandler(films, error)
         }
     }
     
     func getFilm(movieId: String, complitionHandler: @escaping (Film?, Error?) -> Void) {
-        repository.fetchTitle(movieId: movieId) { response, error in
-            guard let response = response else {
+        repository.fetchTitle(movieId: movieId) { [weak self] film, error in
+            guard var filmWithRating = film else {
                 complitionHandler(nil, error)
                 return
             }
-            do {
-                let film = try self.handleFilmQuery(from: response)
-                complitionHandler(film, nil)
-            } catch {
-                complitionHandler(nil, InteractorErrors.mappingError)
-            }
+            filmWithRating.userRating = self?.getRating(for: filmWithRating)
+            complitionHandler(filmWithRating, nil)
         }
     }
     
-    private func handleRatingPosterQuery(from response: Moya.Response) throws -> [Poster] {
-        let query = try response.map(IMDbRatingPosterQuery.self)
-        var films = [Poster]()
-        for item in query.items {
-            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: item.imDbRating, description: nil))
-        }
-        return films
+    private func getRating(for film: Film) -> Int? {
+        dbManager.getRating(for: film)
     }
     
-    private func handleSearchResultQuery(from response: Moya.Response) throws -> [Poster] {
-        let query = try response.map(IMDbSearchResultQuery.self)
-        var films = [Poster]()
-        for item in query.results {
-            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: nil, description: item.description))
-        }
-        return films
-    }
-    
-    private func parseAsCharacter(from value: String) -> String {
-        let blocks = value.components(separatedBy: "as ")
-        if blocks.count == 2 {
-            return blocks.first!
-        }
-        return value
-    }
-    
-    private func handleFilmQuery(from response: Moya.Response) throws -> Film {
-        let film = try response.map(IMDbFilm.self)
-        var actors = [Film.Actor]()
-        for star in film.actorList {
-            actors.append(Film.Actor(id: star.id, imageURL: star.image, name: star.name, asCharacter: parseAsCharacter(from: star.asCharacter)))
-        }
-        var similars = [Poster]()
-        for similar in film.similars {
-            similars.append(Poster(id: similar.id, title: similar.title, imageURL: similar.image, imdbRating: similar.imDbRating, description: nil))
-        }
-        return Film(
-            id: film.id,
-            title: film.title,
-            fullTitle: film.fullTitle,
-            year: film.year,
-            posterURL: film.image,
-            runtimeStr: film.runtimeStr,
-            plot: film.plot,
-            genres: film.genres,
-            directors: film.directors,
-            writers: film.writers,
-            actors: actors,
-            contentRating: film.contentRating,
-            imdbRating: film.imDbRating,
-            imdbRatingVotes: film.imDbRatingVotes,
-            similars: similars)
+    func setRating(for film: Film, rating: Int) {
+        dbManager.setRating(for: film, rating: rating)
     }
 }

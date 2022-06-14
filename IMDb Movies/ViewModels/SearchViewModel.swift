@@ -23,15 +23,14 @@ class SearchViewModel: ObservableObject {
         }
     }
     @Published private(set) var results = [Poster]()
+    private let interactor = FilmsInteractor()
     
     private func updateSearch() {
-        results = []
         guard searchQuery != "" else {
             searchStatus = .start
             return
         }
         searchStatus = .searching
-        let interactor = FilmsInteractor()
         interactor.searchFilms(searchQuery: searchQuery) { [weak self] query, films, error in
             guard query == self?.searchQuery else {
                 return

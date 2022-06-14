@@ -35,11 +35,11 @@ struct HomeView: View {
     private func filmsHorizontalLists(in geometry: GeometryProxy) -> some View {
         VStack {
             PostersHorizontalScroll(title: "In theaters", items: filmsViewModel.inTheaters)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
+                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
             PostersHorizontalScroll(title: "Coming soon", items: filmsViewModel.comingSoon)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
+                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
             PostersHorizontalScroll(title: "Popular now", items: filmsViewModel.mostPopular)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
+                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
         }
         .padding()
     }

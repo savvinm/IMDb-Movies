@@ -17,6 +17,7 @@ class FilmDetailViewModel: ObservableObject {
     private(set) var film: Film?
     @Published private(set) var status: Statuses
     let maximumRating = 10
+    private let interactor = FilmsInteractor()
     
     init(filmId: String) {
         status = .loading
@@ -30,7 +31,6 @@ class FilmDetailViewModel: ObservableObject {
     }
     
     private func getFilm() {
-        let interactor = FilmsInteractor()
         interactor.getFilm(movieId: filmId) { [weak self] film, error in
             guard let self = self else {
                 return
@@ -41,27 +41,20 @@ class FilmDetailViewModel: ObservableObject {
                 }
                 return
             }
-            if var film = film {
+            if let film = film {
                 DispatchQueue.main.async {
-                    film.userRating = self.getRating(for: film)
-                    self.status = .succes
                     self.film = film
+                    self.status = .succes
                 }
             }
         }
-    }
-    
-    private func getRating(for film: Film) -> Int? {
-        let dbManager = DBManager()
-        return dbManager.getRating(for: film)
     }
     
     func rateFilm(rating: Int) {
         guard film != nil else {
             return
         }
-        let dbManager = DBManager()
-        dbManager.setRating(for: film!, rating: rating)
+        interactor.setRating(for: film!, rating: rating)
         film!.userRating = rating
         objectWillChange.send()
     }

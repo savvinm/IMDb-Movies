@@ -8,5 +8,4 @@ target 'IMDb Movies' do
     pod 'Moya', '~> 15.0'
     pod 'RealmSwift'
     pod 'GoogleSignIn'
-    pod 'GoogleSignInSwiftSupport'
 end

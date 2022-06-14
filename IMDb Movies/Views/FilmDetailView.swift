@@ -52,7 +52,7 @@ struct FilmDetailView: View {
             genresBlock(for: film)
             descriptionBlock(for: film, in: geometry)
             PostersHorizontalScroll(title: "More like this", items: film.similars)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.5)
+                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
         }
     }
     
@@ -132,7 +132,7 @@ struct FilmDetailView: View {
             Text(film.plot).padding(.bottom)
             Divider()
             ActorsHorizontalScroll(title: "Top cast", items: film.actors)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.45)
+                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
                 .padding(.bottom)
             Divider()
             descriptionSection(title: "Directors", value: film.directors)
