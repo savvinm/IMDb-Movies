@@ -89,9 +89,3 @@ struct PostersHorizontalScroll: View {
         .cornerRadius(5)
     }
 }
-
-struct TapShape: Shape {
-    func path(in rect: CGRect) -> Path {
-        return Path(CGRect(x: 0, y: 0, width: rect.width, height: rect.height))
-    }
-}

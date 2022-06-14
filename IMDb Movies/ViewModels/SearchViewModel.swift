@@ -18,19 +18,29 @@ class SearchViewModel: ObservableObject {
     @Published var searchQuery = "" {
         didSet {
             if searchQuery != oldValue {
-                updateSearch()
+                startDelay()
             }
         }
     }
     @Published private(set) var results = [Poster]()
     private let interactor = FilmsInteractor()
+    private var workItem: DispatchWorkItem?
     
-    private func updateSearch() {
+    private func startDelay() {
         guard searchQuery != "" else {
             searchStatus = .start
             return
         }
         searchStatus = .searching
+        workItem?.cancel()
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.performSearch()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75, execute: workItem)
+        self.workItem = workItem
+    }
+    
+    private func performSearch() {
         interactor.searchFilms(searchQuery: searchQuery) { [weak self] query, films, error in
             guard query == self?.searchQuery else {
                 return

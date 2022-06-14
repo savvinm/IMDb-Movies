@@ -20,8 +20,8 @@ struct Film: Identifiable {
     let writers: String
     let actors: [Actor]
     let contentRating: String
-    let imdbRating: String
-    let imdbRatingVotes: String
+    let imdbRating: String?
+    let imdbRatingVotes: String?
     var userRating: Int?
     let similars: [Poster]
     

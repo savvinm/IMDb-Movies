@@ -80,15 +80,17 @@ struct FilmDetailView: View {
     
     private func ratingBlock(for film: Film) -> some View {
         VStack {
-            VStack {
-                Text("IMDb Rating")
-                    .fontWeight(Font.Weight.semibold)
-                HStack {
-                    Image(systemName: "star.fill").foregroundColor(.yellow)
-                    Text("\(film.imdbRating)/\(filmDetailViewModel.maximumRating)")
+            if film.imdbRating != nil {
+                VStack {
+                    Text("IMDb Rating")
+                        .fontWeight(Font.Weight.semibold)
+                    HStack {
+                        Image(systemName: "star.fill").foregroundColor(.yellow)
+                        Text("\(film.imdbRating!)/\(filmDetailViewModel.maximumRating)")
+                    }
                 }
+                .padding()
             }
-            .padding()
             VStack {
                 Text("Your rating")
                     .fontWeight(Font.Weight.semibold)
@@ -132,7 +134,7 @@ struct FilmDetailView: View {
             Text(film.plot).padding(.bottom)
             Divider()
             ActorsHorizontalScroll(title: "Top cast", items: film.actors)
-                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
+                .frame(width: geometry.size.width, height: geometry.size.width * 0.65)
                 .padding(.bottom)
             Divider()
             descriptionSection(title: "Directors", value: film.directors)

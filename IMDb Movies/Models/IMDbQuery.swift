@@ -44,14 +44,13 @@ struct IMDbFilm: Identifiable, Codable {
     let writers: String
     let actorList: [IMDbActor]
     let contentRating: String
-    let imDbRating: String
-    let imDbRatingVotes: String
+    let imDbRating: String?
+    let imDbRatingVotes: String?
     let similars: [IMDbPosterWithRating]
 
     struct IMDbActor: Codable, Identifiable {
         let id: String
         let image: String
         let name: String
-        let asCharacter: String
     }
 }

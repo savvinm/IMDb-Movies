@@ -17,21 +17,24 @@ struct InListPosterView: View {
                         .frame(width: geometry.size.width * 0.4, height: geometry.size.height)
                     textBlock
                 }
+                .contentShape(TapShape())
             })
             .buttonStyle(PlainButtonStyle())
         }
     }
     
     private var textBlock: some View {
-        VStack(alignment: .center) {
-            Text(poster.title)
-                //.multilineTextAlignment(.center)
-            Text(poster.description ?? "")
-                //.multilineTextAlignment(.leading)
+        HStack {
+            Spacer()
+            VStack(alignment: .center) {
+                Text(poster.title)
+                    .font(.headline)
+                Text(poster.description ?? "")
+                Spacer()
+            }
+            .multilineTextAlignment(.center)
             Spacer()
         }
-        .multilineTextAlignment(.center)
-        .font(.headline)
         .padding()
     }
     

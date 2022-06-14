@@ -24,7 +24,9 @@ struct SearchView: View {
                 }
                 .padding()
                 resultBlock
+                    .padding()
             }
+            .onTapGesture { searchFieldIsFocused = false }
             .padding(.top)
             .navigationBarHidden(true)
         }
@@ -43,7 +45,6 @@ struct SearchView: View {
                 searchingView
             }
         }
-        .onTapGesture { searchFieldIsFocused = false }
     }
     
     private var searchingView: some View {
