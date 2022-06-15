@@ -17,15 +17,8 @@ struct LoginView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .padding()
-            /*Image("signInImage")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: UIScreen.main.bounds.size.width * 0.7, height: UIScreen.main.bounds.size.height * 0.3)
-                .clipped()
-                .cornerRadius(20)*/
             Spacer()
             Text("Sign in to start use IMDb Movies")
-                .font(.headline)
                 .foregroundColor(.secondary)
             googleLoginButton
                 .padding()

@@ -12,7 +12,8 @@ struct Film: Identifiable {
     let title: String
     let fullTitle: String
     let year: String
-    let posterURL: String
+    let posterURL: String?
+    var imagePath: String?
     let runtimeStr: String
     let plot: String
     let genres: String
@@ -21,13 +22,13 @@ struct Film: Identifiable {
     let actors: [Actor]
     let contentRating: String
     let imdbRating: String?
-    let imdbRatingVotes: String?
     var userRating: Int?
     let similars: [Poster]
     
     struct Actor: Identifiable {
         let id: String
-        let imageURL: String
+        let imageURL: String?
+        let imagePath: String?
         let name: String
     }
 }

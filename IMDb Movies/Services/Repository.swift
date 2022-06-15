@@ -12,6 +12,7 @@ final class FilmsRepository {
     private let provider = MoyaProvider<IMDbService>()
     enum RepositoryErrors: Error {
         case mappingError
+        case imageDecodingError
     }
     
     func fetchTitle(movieId: String, complitionHandler: @escaping (Film?, Error?) -> Void) {
@@ -85,7 +86,7 @@ final class FilmsRepository {
         let film = try response.map(IMDbFilm.self)
         var actors = [Film.Actor]()
         for star in film.actorList {
-            actors.append(Film.Actor(id: star.id, imageURL: star.image, name: star.name))
+            actors.append(Film.Actor(id: star.id, imageURL: star.image, imagePath: nil, name: star.name))
         }
         var similars = [Poster]()
         for similar in film.similars {
@@ -97,6 +98,7 @@ final class FilmsRepository {
             fullTitle: film.fullTitle,
             year: film.year,
             posterURL: film.image,
+            imagePath: nil,
             runtimeStr: film.runtimeStr,
             plot: film.plot,
             genres: film.genres,
@@ -105,8 +107,22 @@ final class FilmsRepository {
             actors: actors,
             contentRating: film.contentRating,
             imdbRating: film.imDbRating,
-            imdbRatingVotes: film.imDbRatingVotes,
             similars: similars)
+    }
+    
+    func getImage(url: String, complitionHandler: @escaping (UIImage?, Error?) -> Void) {
+        provider.request(.image(url: url)) { result in
+            switch result {
+            case .success(let response):
+                if let image = UIImage(data: response.data) {
+                    complitionHandler(image, nil)
+                    return
+                }
+                complitionHandler(nil, RepositoryErrors.imageDecodingError)
+            case .failure(let error):
+                complitionHandler(nil, error)
+            }
+        }
     }
     
 }

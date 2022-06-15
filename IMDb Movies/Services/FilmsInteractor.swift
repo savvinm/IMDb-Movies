@@ -5,7 +5,7 @@
 //  Created by Maksim Savvin on 09.06.2022.
 //
 
-import Foundation
+import SwiftUI
 
 final class FilmsInteractor {
     enum ListOption {
@@ -14,8 +14,12 @@ final class FilmsInteractor {
         case mostPopular
         case search(searchQuery: String)
     }
+    enum SavingErrors: Error {
+        case imageDownloadingTimeOut
+    }
     private let repository = FilmsRepository()
-    private let dbManager = DBManager()
+    private let dbManager = RealmManager()
+    private let fileSystemManager = FileSystemManager()
     
     func searchFilms(searchQuery: String, complitionHandler: @escaping (String, [Poster]?, Error?) -> Void) {
         repository.fetchList(option: .search(searchQuery: searchQuery)) { films, error in
@@ -46,5 +50,40 @@ final class FilmsInteractor {
     
     func setRating(for film: Film, rating: Int) {
         dbManager.setRating(for: film, rating: rating)
+    }
+    
+    func getSavedFilms() -> [Film] {
+        dbManager.getFilms()
+    }
+    
+    func saveFilm(_ film: Film) throws {
+        var posterImage: UIImage?
+        let group = DispatchGroup()
+        var status = false
+        group.enter()
+        repository.getImage(url: film.posterURL!) { image, error in
+            if let error = error {
+                print(error)
+            }
+            if let image = image {
+                posterImage = image
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) { [weak self] in
+            if posterImage != nil {
+                var newFilm = film
+                do {
+                    newFilm.imagePath = try self?.fileSystemManager.saveImage(image: posterImage!, imageName: "Posters.\(film.id)")
+                    self?.dbManager.saveFilm(film: newFilm)
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        /*let timeoutResult = group.wait(timeout: .now() + 6)
+        if timeoutResult == .timedOut {
+            throw SavingErrors.imageDownloadingTimeOut
+        }*/
     }
 }

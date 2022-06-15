@@ -58,4 +58,15 @@ class FilmDetailViewModel: ObservableObject {
         film!.userRating = rating
         objectWillChange.send()
     }
+    
+    func saveFilm() {
+        guard let film = film else {
+            return
+        }
+        do {
+            try interactor.saveFilm(film)
+        } catch {
+            print(error)
+        }
+    }
 }

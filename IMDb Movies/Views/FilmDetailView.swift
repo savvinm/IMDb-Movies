@@ -43,13 +43,17 @@ struct FilmDetailView: View {
         }
         .padding()
         .navigationTitle(film.fullTitle)
+        .toolbar { saveButton }
+    }
+    
+    private var saveButton: some View {
+        Button(action: { filmDetailViewModel.saveFilm() }, label: { Image(systemName: "bookmark.fill") })
     }
     
     private func filmBody(for film: Film, in geometry: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
             posterAndRating(for: film, in: geometry)
-            titleBlock(for: film)
-            genresBlock(for: film)
+            infoBlock(for: film)
             descriptionBlock(for: film, in: geometry)
             PostersHorizontalScroll(title: "More like this", items: film.similars)
                 .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
@@ -66,14 +70,18 @@ struct FilmDetailView: View {
     }
     
     private func poster(for film: Film, in geometry: GeometryProxy) -> some View {
-        AsyncImage(url: URL(string: film.posterURL)) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.35)
-                .cornerRadius(10)
-        } placeholder: {
-            ProgressView()
+        VStack {
+            if film.posterURL != nil {
+                AsyncImage(url: URL(string: film.posterURL!)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.35)
+                        .cornerRadius(10)
+                } placeholder: {
+                    ProgressView()
+                }
+            }
         }
         .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.35)
     }
@@ -112,26 +120,23 @@ struct FilmDetailView: View {
         .font(.headline)
     }
     
-    private func titleBlock(for film: Film) -> some View {
+    private func infoBlock(for film: Film) -> some View {
         VStack(alignment: .leading) {
-            /*Text(film.title)
-                .font(.title)*/
             HStack {
                 Text(film.year)
                 Text(film.contentRating)
                 Text(film.runtimeStr)
             }
-        }
-    }
-    private func genresBlock(for film: Film) -> some View {
-        HStack {
             Text(film.genres)
                 .padding(.bottom)
         }
     }
+    
+    
     private func descriptionBlock(for film: Film, in geometry: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
-            Text(film.plot).padding(.bottom)
+            Text(film.plot)
+                .padding(.bottom)
             Divider()
             ActorsHorizontalScroll(title: "Top cast", items: film.actors)
                 .frame(width: geometry.size.width, height: geometry.size.width * 0.65)
@@ -144,6 +149,7 @@ struct FilmDetailView: View {
         }
         .padding(.bottom)
     }
+    
     private func descriptionSection(title: String, value: String) -> some View {
         HStack(alignment: .top) {
             Text("\(title):")

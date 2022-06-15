@@ -16,20 +16,27 @@ public enum IMDbService {
     case mostPopular
     case title(id: String)
     case search(searchQuery: String)
+    case image(url: String)
 }
 
 extension IMDbService: TargetType {
     public var baseURL: URL {
-        return URL(string: "https://imdb-api.com/en/API")!
+        switch self {
+        case .inTheaters, .mostPopular, .comingSoon, .search, .title:
+            return URL(string: "https://imdb-api.com")!
+        case .image(let url):
+            return URL(string: url)!
+        }
     }
     
     public var path: String {
         switch self {
-        case .inTheaters: return "/inTheaters/\(IMDbService.key)"
-        case .comingSoon: return "/ComingSoon/\(IMDbService.key)"
-        case .mostPopular: return "/MostPopularMovies/\(IMDbService.key)"
-        case .title(let id): return "/Title/\(IMDbService.key)/\(id)"
-        case .search(let searchQuery): return "/SearchMovie/\(IMDbService.key)/\(searchQuery)"
+        case .inTheaters: return "/en/API/inTheaters/\(IMDbService.key)"
+        case .comingSoon: return "/en/API/ComingSoon/\(IMDbService.key)"
+        case .mostPopular: return "/en/API/MostPopularMovies/\(IMDbService.key)"
+        case .title(let id): return "/en/API/Title/\(IMDbService.key)/\(id)"
+        case .search(let searchQuery): return "/en/API/SearchMovie/\(IMDbService.key)/\(searchQuery)"
+        case .image: return ""
         }
     }
     

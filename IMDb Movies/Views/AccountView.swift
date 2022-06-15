@@ -24,7 +24,7 @@ struct AccountView: View {
     private var userSavedBlock: some View {
         Section(header: Text("")) {
             NavigationLink {
-                
+                SavedFilmsView()
             } label: {
                 Text("Saved movies")
             }

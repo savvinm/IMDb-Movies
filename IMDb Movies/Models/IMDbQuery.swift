@@ -45,7 +45,6 @@ struct IMDbFilm: Identifiable, Codable {
     let actorList: [IMDbActor]
     let contentRating: String
     let imDbRating: String?
-    let imDbRatingVotes: String?
     let similars: [IMDbPosterWithRating]
 
     struct IMDbActor: Codable, Identifiable {
