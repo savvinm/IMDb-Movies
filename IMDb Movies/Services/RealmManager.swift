@@ -10,41 +10,27 @@ import RealmSwift
 
 final class RealmManager {
     func getRating(for film: Film) -> Int? {
-        guard let saved = getSavedRating(for: film) else {
-            return nil
-        }
-        return saved.rating
+        getSavedRating(for: film)?.rating
     }
     
     private func getSavedRating(for film: Film) ->  UserRating? {
         let localRealm = try! Realm()
         let ratings = localRealm.objects(UserRating.self)
-        let options = ratings.where {
-            $0.filmId == film.id
-        }
-        guard !options.isEmpty else {
-            return nil
-        }
-        return options.first
+        return ratings.first(where: { $0.filmId == film.id })
     }
     
     func setRating(for film: Film, rating: Int) {
         let localRealm = try! Realm()
-        let ratings = localRealm.objects(UserRating.self)
-        let options = ratings.where {
-            $0.filmId == film.id
-        }
-        guard options.isEmpty else {
-            let userRating = options.first
+        if let savedRating = getSavedRating(for: film) {
             try! localRealm.write {
-                userRating?.rating = rating
-                userRating?.ratingDate = Date()
+                savedRating.rating = rating
+                savedRating.ratingDate = Date()
             }
-            return
-        }
-        let userRating = UserRating(filmId: film.id, rating: rating, ratingDate: Date())
-        try! localRealm.write {
-            localRealm.add(userRating)
+        } else {
+            let userRating = UserRating(filmId: film.id, rating: rating, ratingDate: Date())
+            try! localRealm.write {
+                localRealm.add(userRating)
+            }
         }
      }
     
@@ -56,9 +42,17 @@ final class RealmManager {
         return actors
     }
     
-    func getFilms() -> [Film] {
+    func getFilms(sortOption: FilmsInteractor.SortOption) -> [Film] {
         let localRealm = try! Realm()
-        let localfilms = localRealm.objects(SavedFilm.self)
+        let localfilms = localRealm.objects(SavedFilm.self).sorted(by: { filmA, filmB in
+            switch sortOption {
+            case .byName:
+                return filmA.fullTitle < filmB.fullTitle
+            case .byDate:
+                return filmA.savingDate > filmB.savingDate
+            }
+            
+        })
         var films = [Film]()
         for film in localfilms {
             films.append(Film(
@@ -99,10 +93,21 @@ final class RealmManager {
             actors: [],
             contentRating: film.contentRating,
             imdbRating: film.imdbRating,
-            userRating: getSavedRating(for: film)
+            userRating: getSavedRating(for: film),
+            savingDate: Date()
         )
         try! localRealm.write {
             localRealm.add(localFilm)
+        }
+    }
+    
+    func deleteFilm(_ film: Film) {
+        let localRealm = try! Realm()
+        let films = localRealm.objects(SavedFilm.self)
+        if let film = films.first(where: { $0.id == film.id }) {
+            try! localRealm.write {
+                localRealm.delete(film)
+            }
         }
     }
 }

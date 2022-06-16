@@ -14,9 +14,16 @@ final class FilmsInteractor {
         case mostPopular
         case search(searchQuery: String)
     }
+    
     enum SavingErrors: Error {
         case imageDownloadingTimeOut
     }
+    
+    enum SortOption {
+        case byName
+        case byDate
+    }
+    
     private let repository = FilmsRepository()
     private let dbManager = RealmManager()
     private let fileSystemManager = FileSystemManager()
@@ -52,14 +59,22 @@ final class FilmsInteractor {
         dbManager.setRating(for: film, rating: rating)
     }
     
-    func getSavedFilms() -> [Film] {
-        dbManager.getFilms()
+    func readImageInFileSystem(path: String) throws -> UIImage {
+        try fileSystemManager.readImage(imagePath: path)
+    }
+    
+    func getSavedFilms(sortOption: SortOption) -> [Film] {
+        dbManager.getFilms(sortOption: sortOption)
+    }
+    
+    func deleteFilm(_ film: Film) {
+        print(film.id)
+        dbManager.deleteFilm(film)
     }
     
     func saveFilm(_ film: Film) throws {
         var posterImage: UIImage?
         let group = DispatchGroup()
-        var status = false
         group.enter()
         repository.getImage(url: film.posterURL!) { image, error in
             if let error = error {
@@ -81,9 +96,5 @@ final class FilmsInteractor {
                 }
             }
         }
-        /*let timeoutResult = group.wait(timeout: .now() + 6)
-        if timeoutResult == .timedOut {
-            throw SavingErrors.imageDownloadingTimeOut
-        }*/
     }
 }

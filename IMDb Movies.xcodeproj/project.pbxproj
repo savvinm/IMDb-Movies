@@ -11,13 +11,14 @@
 		B57632E9284A334C0058FB3B /* ActorsHorizontalScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57632E8284A334C0058FB3B /* ActorsHorizontalScroll.swift */; };
 		B578AB84285247680039A5FF /* FilmsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB83285247680039A5FF /* FilmsInteractor.swift */; };
 		B578AB862852559B0039A5FF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB852852559B0039A5FF /* Extensions.swift */; };
-		B578AB88285274A00039A5FF /* RatingFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB87285274A00039A5FF /* RatingFrame.swift */; };
+		B578AB88285274A00039A5FF /* RatingSetFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB87285274A00039A5FF /* RatingSetFrame.swift */; };
 		B578AB8C2853AFEA0039A5FF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB8B2853AFEA0039A5FF /* LoginView.swift */; };
 		B578AB8F2853D8C00039A5FF /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB8E2853D8C00039A5FF /* AuthViewModel.swift */; };
 		B578AB912853E0C50039A5FF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B578AB902853E0C50039A5FF /* ContentView.swift */; };
 		B579662F28547A9000A01FF4 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B579662E28547A9000A01FF4 /* AccountView.swift */; };
 		B58C24C92859259100A070EF /* TapShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C24C82859259100A070EF /* TapShape.swift */; };
 		B58C7BCE28547BD50097501C /* AppTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C7BCD28547BD50097501C /* AppTabView.swift */; };
+		B5974437285B372B00F84FC8 /* RatingIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5974436285B372B00F84FC8 /* RatingIcon.swift */; };
 		B5AEFCA22855CE6C00AC6B5F /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AEFCA12855CE6C00AC6B5F /* SearchView.swift */; };
 		B5AEFCC82856642100AC6B5F /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AEFCC72856642100AC6B5F /* SearchViewModel.swift */; };
 		B5BF24CE285A26F300900712 /* FileSystemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BF24CD285A26F300900712 /* FileSystemManager.swift */; };
@@ -48,7 +49,7 @@
 		B57632E8284A334C0058FB3B /* ActorsHorizontalScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorsHorizontalScroll.swift; sourceTree = "<group>"; };
 		B578AB83285247680039A5FF /* FilmsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsInteractor.swift; sourceTree = "<group>"; };
 		B578AB852852559B0039A5FF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		B578AB87285274A00039A5FF /* RatingFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingFrame.swift; sourceTree = "<group>"; };
+		B578AB87285274A00039A5FF /* RatingSetFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingSetFrame.swift; sourceTree = "<group>"; };
 		B578AB8B2853AFEA0039A5FF /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B578AB8D2853D42C0039A5FF /* IMDb-Movies-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "IMDb-Movies-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B578AB8E2853D8C00039A5FF /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -56,6 +57,7 @@
 		B579662E28547A9000A01FF4 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		B58C24C82859259100A070EF /* TapShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapShape.swift; sourceTree = "<group>"; };
 		B58C7BCD28547BD50097501C /* AppTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabView.swift; sourceTree = "<group>"; };
+		B5974436285B372B00F84FC8 /* RatingIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingIcon.swift; sourceTree = "<group>"; };
 		B5AEFCA12855CE6C00AC6B5F /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		B5AEFCC72856642100AC6B5F /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		B5BF24CD285A26F300900712 /* FileSystemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemManager.swift; sourceTree = "<group>"; };
@@ -199,9 +201,10 @@
 			children = (
 				B57632E8284A334C0058FB3B /* ActorsHorizontalScroll.swift */,
 				B5C0B3672849476E00A1EBBE /* PostersHorizontalScroll.swift */,
-				B578AB87285274A00039A5FF /* RatingFrame.swift */,
+				B578AB87285274A00039A5FF /* RatingSetFrame.swift */,
 				B5F8B9B6285749C100C59347 /* InListPosterView.swift */,
 				B58C24C82859259100A070EF /* TapShape.swift */,
+				B5974436285B372B00F84FC8 /* RatingIcon.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -358,6 +361,7 @@
 				B5BF24D5285A442500900712 /* SavedFilmsViewModel.swift in Sources */,
 				B5C0B33F2842ABAB00A1EBBE /* HomeView.swift in Sources */,
 				B5C0B35D2846AF0E00A1EBBE /* Repository.swift in Sources */,
+				B5974437285B372B00F84FC8 /* RatingIcon.swift in Sources */,
 				B5F8B9B7285749C100C59347 /* InListPosterView.swift in Sources */,
 				B578AB912853E0C50039A5FF /* ContentView.swift in Sources */,
 				B5C0B3612847682800A1EBBE /* RealmManager.swift in Sources */,
@@ -372,7 +376,7 @@
 				B57632E9284A334C0058FB3B /* ActorsHorizontalScroll.swift in Sources */,
 				B5AEFCC82856642100AC6B5F /* SearchViewModel.swift in Sources */,
 				B5C0B35B2846ADC200A1EBBE /* Film.swift in Sources */,
-				B578AB88285274A00039A5FF /* RatingFrame.swift in Sources */,
+				B578AB88285274A00039A5FF /* RatingSetFrame.swift in Sources */,
 				B5C0B3642848C14900A1EBBE /* Poster.swift in Sources */,
 				B578AB8C2853AFEA0039A5FF /* LoginView.swift in Sources */,
 				B5C0B3662849332600A1EBBE /* FilmDetailViewModel.swift in Sources */,

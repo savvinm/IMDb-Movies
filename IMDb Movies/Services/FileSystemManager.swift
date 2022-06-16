@@ -29,7 +29,7 @@ final class FileSystemManager {
     }
     
     private func saveImageInFS(image: UIImage, path: URL) throws {
-        guard let data = image.jpegData(compressionQuality: 0.7) else {
+        guard let data = image.jpegData(compressionQuality: 0.5) else {
             throw FileSystemErrors.imageCompressingError
         }
         do {

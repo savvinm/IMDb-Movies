@@ -37,7 +37,7 @@ struct FilmDetailView: View {
             .onTapGesture { showingRatingFrame = false }
             .overlay(alignment: .center, content: {
                 if showingRatingFrame {
-                    RatingFrame(geometry: geometry, filmDetailViewModel: filmDetailViewModel, showingRatingFrame: $showingRatingFrame, rating: filmDetailViewModel.film?.userRating)
+                    RatingSetFrame(geometry: geometry, filmDetailViewModel: filmDetailViewModel, showingRatingFrame: $showingRatingFrame, rating: filmDetailViewModel.film?.userRating)
                 }
             })
         }

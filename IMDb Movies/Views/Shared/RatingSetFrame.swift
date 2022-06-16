@@ -1,5 +1,5 @@
 //
-//  RatingFrame.swift
+//  RatingSetFrame.swift
 //  IMDb Movies
 //
 //  Created by Maksim Savvin on 09.06.2022.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RatingFrame: View {
+struct RatingSetFrame: View {
     let geometry: GeometryProxy
     let filmDetailViewModel: FilmDetailViewModel
     @Binding var showingRatingFrame: Bool

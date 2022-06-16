@@ -69,23 +69,11 @@ struct PostersHorizontalScroll: View {
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
                 if film.imdbRating != nil && film.imdbRating != "" {
-                    ratingIcon(value: film.imdbRating!)
+                    RatingIcon(value: film.imdbRating!)
                         .frame(width: geometry.size.width * 0.25, height: geometry.size.width * 0.25)
                         .padding(4)
                 }
             }
         }
-    }
-    
-    private func ratingIcon(value: String) -> some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(.white)
-                .opacity(0.85)
-            Text(value)
-                .foregroundColor(.black)
-                .fontWeight(Font.Weight.medium)
-        }
-        .cornerRadius(5)
     }
 }

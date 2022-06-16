@@ -36,10 +36,11 @@ class SavedFilm: Object {
     @Persisted var contentRating: String
     @Persisted var imdbRating: String?
     @Persisted var userRating: UserRating?
+    @Persisted var savingDate: Date
     
     convenience init(id: String, title: String, fullTitle: String, year: String, imagePath: String,
                      runtimeStr: String, plot: String, genres: String, directors: String, writers: String,
-                     actors: [SavedActor], contentRating: String, imdbRating: String?, userRating: UserRating?) {
+                     actors: [SavedActor], contentRating: String, imdbRating: String?, userRating: UserRating?, savingDate: Date) {
         self.init()
         self.id = id
         self.title = title
@@ -55,6 +56,7 @@ class SavedFilm: Object {
         self.contentRating = contentRating
         self.imdbRating = imdbRating
         self.userRating = userRating
+        self.savingDate = savingDate
     }
 }
 
