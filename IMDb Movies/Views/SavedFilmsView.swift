@@ -13,10 +13,26 @@ struct SavedFilmsView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
-                filterButtons
-                filmsList(in: geometry)
+                if savedFilmsViewModel.films.isEmpty {
+                    emptyMessage
+                } else {
+                    filterButtons
+                    filmsList(in: geometry)
+                }
             }
+            .toolbar { EditButton() }
             .onAppear { savedFilmsViewModel.updateFilms() }
+        }
+    }
+    
+    private var emptyMessage: some View {
+        VStack {
+            Spacer()
+            Text("There is nothing yet. Add movies to your saved list by tapping \(Image(systemName: "bookmark"))")
+                .multilineTextAlignment(.center)
+                .foregroundColor(.secondary)
+                .padding()
+            Spacer()
         }
     }
     

@@ -35,7 +35,7 @@ class SavedFilmsViewModel: ObservableObject {
     
     func deleteFilm(at index: Int) {
         interactor.deleteFilm(films[index])
-        updateFilms()
+        films.remove(at: index)
     }
     
     func updateFilms() {

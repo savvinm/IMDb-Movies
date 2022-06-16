@@ -68,33 +68,82 @@ final class FilmsInteractor {
     }
     
     func deleteFilm(_ film: Film) {
-        print(film.id)
-        dbManager.deleteFilm(film)
+        do {
+            try deleteImages(for: film)
+            dbManager.deleteFilm(film)
+        } catch {
+            print(error)
+        }
+    }
+    
+    private func deleteImages(for film: Film) throws {
+        if let imagePath = film.imagePath {
+            try fileSystemManager.deleteFile(fileName: imagePath)
+        }
+        for filmActor in film.actors {
+            if let imagePath = filmActor.imagePath {
+                try fileSystemManager.deleteFile(fileName: imagePath)
+            }
+        }
+    }
+    
+    private func getAllImageURLs(for film: Film) -> [String: String] {
+        var dict = [String: String]()
+        if let imagePath = film.posterURL {
+            dict[film.id] = imagePath
+        }
+        for filmActor in film.actors.prefix(5) {
+            if let imagePath = filmActor.imageURL {
+                dict[filmActor.id] = imagePath
+            }
+        }
+        return dict
+    }
+    
+    private func saveImages(for film: Film, images: [String: UIImage]) throws -> Film {
+        var paths = [String: String]()
+        var filmWithImages = film
+        for key in images.keys {
+            paths[key] = try fileSystemManager.saveImage(image: images[key]!, imageName: key)
+        }
+        filmWithImages.imagePath = paths[film.id]
+        filmWithImages.actors = []
+        for filmActor in film.actors {
+            filmWithImages.actors.append(Film.Actor(id: filmActor.id, imageURL: nil, imagePath: paths[filmActor.id], name: filmActor.name))
+        }
+        return filmWithImages
     }
     
     func saveFilm(_ film: Film) throws {
-        var posterImage: UIImage?
+        let urls = getAllImageURLs(for: film)
+        var images = [String: UIImage]()
         let group = DispatchGroup()
-        group.enter()
-        repository.getImage(url: film.posterURL!) { image, error in
-            if let error = error {
-                print(error)
-            }
-            if let image = image {
-                posterImage = image
-                group.leave()
-            }
-        }
-        group.notify(queue: .main) { [weak self] in
-            if posterImage != nil {
-                var newFilm = film
-                do {
-                    newFilm.imagePath = try self?.fileSystemManager.saveImage(image: posterImage!, imageName: "Posters.\(film.id)")
-                    self?.dbManager.saveFilm(film: newFilm)
-                } catch {
+        for key in urls.keys {
+            group.enter()
+            repository.getImage(url: urls[key]!) { image, error in
+                if let error = error {
                     print(error)
+                }
+                if let image = image {
+                    images[key] = image
+                    group.leave()
                 }
             }
         }
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            do {
+                let newFilm = try self.saveImages(for: film, images: images)
+                self.dbManager.saveFilm(film: newFilm)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func isFilmSaved(filmId: String) -> Bool {
+        dbManager.isFilmSaved(filmId: filmId)
     }
 }

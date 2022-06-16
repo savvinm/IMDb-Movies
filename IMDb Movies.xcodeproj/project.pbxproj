@@ -124,9 +124,9 @@
 		B5C0B33B2842ABAB00A1EBBE /* IMDb Movies */ = {
 			isa = PBXGroup;
 			children = (
-				B578AB8D2853D42C0039A5FF /* IMDb-Movies-Info.plist */,
 				B5C0B3402842ABAF00A1EBBE /* Assets.xcassets */,
 				B5C0B33C2842ABAB00A1EBBE /* IMDb_MoviesApp.swift */,
+				B578AB8D2853D42C0039A5FF /* IMDb-Movies-Info.plist */,
 				B5C0B34E2842B29000A1EBBE /* Models */,
 				B5C0B3422842ABAF00A1EBBE /* Preview Content */,
 				B5C0B34B2842B22E00A1EBBE /* Services */,
@@ -147,11 +147,11 @@
 		B5C0B34B2842B22E00A1EBBE /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				B5C0B3602847682800A1EBBE /* RealmManager.swift */,
 				B578AB852852559B0039A5FF /* Extensions.swift */,
-				B5C0B3582844DA2A00A1EBBE /* IMDbService.swift */,
 				B5BF24CD285A26F300900712 /* FileSystemManager.swift */,
 				B578AB83285247680039A5FF /* FilmsInteractor.swift */,
+				B5C0B3582844DA2A00A1EBBE /* IMDbService.swift */,
+				B5C0B3602847682800A1EBBE /* RealmManager.swift */,
 				B5C0B35C2846AF0E00A1EBBE /* Repository.swift */,
 			);
 			path = Services;
@@ -160,15 +160,15 @@
 		B5C0B34D2842B24300A1EBBE /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B5F8B9B528572E3200C59347 /* Shared */,
 				B579662E28547A9000A01FF4 /* AccountView.swift */,
 				B58C7BCD28547BD50097501C /* AppTabView.swift */,
 				B578AB902853E0C50039A5FF /* ContentView.swift */,
 				B5C0B3562844130600A1EBBE /* FilmDetailView.swift */,
 				B5C0B33E2842ABAB00A1EBBE /* HomeView.swift */,
 				B578AB8B2853AFEA0039A5FF /* LoginView.swift */,
-				B5AEFCA12855CE6C00AC6B5F /* SearchView.swift */,
 				B5BF24D2285A43D200900712 /* SavedFilmsView.swift */,
+				B5AEFCA12855CE6C00AC6B5F /* SearchView.swift */,
+				B5F8B9B528572E3200C59347 /* Shared */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -190,8 +190,8 @@
 				B578AB8E2853D8C00039A5FF /* AuthViewModel.swift */,
 				B5C0B3652849332600A1EBBE /* FilmDetailViewModel.swift */,
 				B5C0B3542842B77E00A1EBBE /* FilmsListViewModel.swift */,
-				B5AEFCC72856642100AC6B5F /* SearchViewModel.swift */,
 				B5BF24D4285A442500900712 /* SavedFilmsViewModel.swift */,
+				B5AEFCC72856642100AC6B5F /* SearchViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -200,11 +200,11 @@
 			isa = PBXGroup;
 			children = (
 				B57632E8284A334C0058FB3B /* ActorsHorizontalScroll.swift */,
-				B5C0B3672849476E00A1EBBE /* PostersHorizontalScroll.swift */,
-				B578AB87285274A00039A5FF /* RatingSetFrame.swift */,
 				B5F8B9B6285749C100C59347 /* InListPosterView.swift */,
-				B58C24C82859259100A070EF /* TapShape.swift */,
+				B5C0B3672849476E00A1EBBE /* PostersHorizontalScroll.swift */,
 				B5974436285B372B00F84FC8 /* RatingIcon.swift */,
+				B578AB87285274A00039A5FF /* RatingSetFrame.swift */,
+				B58C24C82859259100A070EF /* TapShape.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct InListPosterView: View {
+    private let film: Film?
     private let filmId: String
     private let title: String
     private let description: String
@@ -15,8 +16,10 @@ struct InListPosterView: View {
     private let imagePath: String?
     private let imdbRating: String?
     private let savedFilmsViewModel: SavedFilmsViewModel?
+    private let isLocal: Bool
     
     init(poster: Poster) {
+        film = nil
         filmId = poster.id
         title = poster.title
         description = poster.description ?? ""
@@ -24,8 +27,10 @@ struct InListPosterView: View {
         imagePath = nil
         imdbRating = poster.imdbRating
         savedFilmsViewModel = nil
+        isLocal = false
     }
     init(film: Film, savedFilmsViewModel: SavedFilmsViewModel) {
+        self.film = film
         filmId = film.id
         title = film.fullTitle
         description = ""
@@ -33,11 +38,14 @@ struct InListPosterView: View {
         imagePath = film.imagePath
         imdbRating = film.imdbRating
         self.savedFilmsViewModel = savedFilmsViewModel
+        isLocal = true
     }
     
     var body: some View {
         GeometryReader { geometry in
-            NavigationLink(destination: FilmDetailView(filmId: filmId), label: {
+            NavigationLink(destination: {
+                isLocal ? FilmDetailView(film: film!) : FilmDetailView(filmId: filmId)
+            }, label: {
                 HStack {
                     poster
                         .frame(width: geometry.size.width * 0.4, height: geometry.size.height)
@@ -83,8 +91,8 @@ struct InListPosterView: View {
                 asyncImage(in: geometry)
             }
             if
-                imagePath != nil,
-                let image = savedFilmsViewModel?.getImage(in: imagePath!)
+                let imagePath = imagePath,
+                let image = savedFilmsViewModel?.getImage(in: imagePath)
             {
                 Image(uiImage: image)
                     .resizable()

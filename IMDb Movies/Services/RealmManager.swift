@@ -28,13 +28,31 @@ final class RealmManager {
             }
         } else {
             let userRating = UserRating(filmId: film.id, rating: rating, ratingDate: Date())
+            writeRatingToFilm(rating: userRating, filmId: film.id)
             try! localRealm.write {
                 localRealm.add(userRating)
             }
         }
      }
     
-    func getActors(for film: SavedFilm) -> [Film.Actor] {
+    func isFilmSaved(filmId: String) -> Bool {
+        let localRealm = try! Realm()
+        if localRealm.objects(SavedFilm.self).first(where: { $0.id == filmId }) != nil {
+            return true
+        }
+        return false
+    }
+    
+    private func writeRatingToFilm(rating: UserRating, filmId: String) {
+        let localRealm = try! Realm()
+        if let film = localRealm.objects(SavedFilm.self).first(where: { $0.id == filmId }) {
+            try! localRealm.write {
+                film.userRating = rating
+            }
+        }
+    }
+    
+    private func getActors(for film: SavedFilm) -> [Film.Actor] {
         var actors = [Film.Actor]()
         for filmActor in film.actors {
             actors.append(Film.Actor(id: filmActor.id, imageURL: nil, imagePath: filmActor.imagePath, name: filmActor.name))

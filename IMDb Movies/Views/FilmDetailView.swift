@@ -10,9 +10,18 @@ import SwiftUI
 struct FilmDetailView: View {
     @ObservedObject var filmDetailViewModel: FilmDetailViewModel
     @State var showingRatingFrame = false
+    private let isLocal: Bool
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     
     init(filmId: String) {
         filmDetailViewModel = FilmDetailViewModel(filmId: filmId)
+        isLocal = false
+    }
+    
+    init(film: Film) {
+        filmDetailViewModel = FilmDetailViewModel(film: film)
+        isLocal = true
     }
     
     var body: some View {
@@ -47,7 +56,12 @@ struct FilmDetailView: View {
     }
     
     private var saveButton: some View {
-        Button(action: { filmDetailViewModel.saveFilm() }, label: { Image(systemName: "bookmark.fill") })
+        Button(action: {
+            filmDetailViewModel.toggleSaveFilm(presentationMode: isLocal ? presentationMode : nil)
+            
+        }, label: {
+            Image(systemName: filmDetailViewModel.isSaved ? "bookmark.fill" : "bookmark")
+        })
     }
     
     private func filmBody(for film: Film, in geometry: GeometryProxy) -> some View {
@@ -55,8 +69,10 @@ struct FilmDetailView: View {
             posterAndRating(for: film, in: geometry)
             infoBlock(for: film)
             descriptionBlock(for: film, in: geometry)
-            PostersHorizontalScroll(title: "More like this", items: film.similars)
-                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
+            if !isLocal {
+                PostersHorizontalScroll(title: "More like this", items: film.similars)
+                    .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
+            }
         }
     }
     
@@ -72,18 +88,30 @@ struct FilmDetailView: View {
     private func poster(for film: Film, in geometry: GeometryProxy) -> some View {
         VStack {
             if film.posterURL != nil {
-                AsyncImage(url: URL(string: film.posterURL!)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.35)
-                        .cornerRadius(10)
-                } placeholder: {
-                    ProgressView()
-                }
+                asyncImage(for: film)
+            }
+            if
+                let imagePath = film.imagePath,
+                let image = filmDetailViewModel.getImage(in: imagePath)
+            {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
             }
         }
         .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.35)
+        .clipped()
+        .cornerRadius(10)
+    }
+    
+    private func asyncImage(for film: Film) -> some View {
+        AsyncImage(url: URL(string: film.posterURL!)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } placeholder: {
+            ProgressView()
+        }
     }
     
     private func ratingBlock(for film: Film) -> some View {
@@ -138,7 +166,7 @@ struct FilmDetailView: View {
             Text(film.plot)
                 .padding(.bottom)
             Divider()
-            ActorsHorizontalScroll(title: "Top cast", items: film.actors)
+            ActorsHorizontalScroll(title: isLocal ? "Top 5 cast" : "Top cast", items: film.actors, filmDetailViewModel: isLocal ? filmDetailViewModel : nil)
                 .frame(width: geometry.size.width, height: geometry.size.width * 0.65)
                 .padding(.bottom)
             Divider()

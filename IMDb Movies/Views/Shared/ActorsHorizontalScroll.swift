@@ -10,6 +10,7 @@ import SwiftUI
 struct ActorsHorizontalScroll: View {
     let title: String
     let items: [Film.Actor]
+    let filmDetailViewModel: FilmDetailViewModel?
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
@@ -46,19 +47,32 @@ struct ActorsHorizontalScroll: View {
     
     private func getImage(for filmActor: Film.Actor) -> some View {
         GeometryReader { geometry in
-            if filmActor.imageURL != nil {
-                AsyncImage(url: URL(string: filmActor.imageURL!)) { image in
-                    image
+            VStack {
+                if filmActor.imageURL != nil {
+                    asyncImage(for: filmActor)
+                }
+                if
+                    let imagePath = filmActor.imagePath,
+                    let image = filmDetailViewModel!.getImage(in: imagePath)
+                {
+                    Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipped()
-                        .cornerRadius(10)
-                } placeholder: {
-                    ProgressView()
                 }
-                .frame(width: geometry.size.width, height: geometry.size.height)
             }
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .clipped()
+            .cornerRadius(10)
+        }
+    }
+    
+    private func asyncImage(for filmActor: Film.Actor) -> some View {
+        AsyncImage(url: URL(string: filmActor.imageURL!)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } placeholder: {
+            ProgressView()
         }
     }
     
@@ -66,9 +80,6 @@ struct ActorsHorizontalScroll: View {
         VStack(alignment: .center) {
             Text(filmActor.name)
                 .multilineTextAlignment(.leading)
-            /*Text("as")
-            Text(filmActor.asCharacter)
-                .multilineTextAlignment(.center)*/
         }
     }
 }
