@@ -76,6 +76,7 @@ final class FilmsInteractor {
         }
     }
     
+    /// Prepare film for deletion by removing images from file system
     private func deleteImages(for film: Film) throws {
         if let imagePath = film.imagePath {
             try fileSystemManager.deleteFile(fileName: imagePath)
@@ -87,12 +88,13 @@ final class FilmsInteractor {
         }
     }
     
-    private func getAllImageURLs(for film: Film) -> [String: String] {
+    /// Prepare list of film images for downloading
+    private func getAllImageURLs(for film: Film, maxActors: Int) -> [String: String] {
         var dict = [String: String]()
         if let imagePath = film.posterURL {
             dict[film.id] = imagePath
         }
-        for filmActor in film.actors.prefix(5) {
+        for filmActor in film.actors.prefix(maxActors) {
             if let imagePath = filmActor.imageURL {
                 dict[filmActor.id] = imagePath
             }
@@ -100,7 +102,8 @@ final class FilmsInteractor {
         return dict
     }
     
-    private func saveImages(for film: Film, images: [String: UIImage]) throws -> Film {
+    /// Takes film and images and returns  new film with
+    private func saveImages(for film: Film, images: [String: UIImage], maxActors: Int) throws -> Film {
         var paths = [String: String]()
         var filmWithImages = film
         for key in images.keys {
@@ -108,14 +111,14 @@ final class FilmsInteractor {
         }
         filmWithImages.imagePath = paths[film.id]
         filmWithImages.actors = []
-        for filmActor in film.actors {
+        for filmActor in film.actors.prefix(maxActors) {
             filmWithImages.actors.append(Film.Actor(id: filmActor.id, imageURL: nil, imagePath: paths[filmActor.id], name: filmActor.name))
         }
         return filmWithImages
     }
     
-    func saveFilm(_ film: Film) throws {
-        let urls = getAllImageURLs(for: film)
+    func saveFilm(_ film: Film) {
+        let urls = getAllImageURLs(for: film, maxActors: 5)
         var images = [String: UIImage]()
         let group = DispatchGroup()
         for key in urls.keys {
@@ -135,7 +138,7 @@ final class FilmsInteractor {
                 return
             }
             do {
-                let newFilm = try self.saveImages(for: film, images: images)
+                let newFilm = try self.saveImages(for: film, images: images, maxActors: 5)
                 self.dbManager.saveFilm(film: newFilm)
             } catch {
                 print(error)

@@ -68,7 +68,7 @@ final class FilmsRepository {
         let query = try response.map(IMDbRatingPosterQuery.self)
         var films = [Poster]()
         for item in query.items {
-            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: item.imDbRating, description: nil))
+            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: item.imDbRating, description: item.description))
         }
         return films
     }
@@ -77,7 +77,7 @@ final class FilmsRepository {
         let query = try response.map(IMDbSearchResultQuery.self)
         var films = [Poster]()
         for item in query.results {
-            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: nil, description: item.description))
+            films.append(Poster(id: item.id, title: item.title, imageURL: item.image, imdbRating: item.imDbRating, description: item.description))
         }
         return films
     }
@@ -90,7 +90,7 @@ final class FilmsRepository {
         }
         var similars = [Poster]()
         for similar in film.similars {
-            similars.append(Poster(id: similar.id, title: similar.title, imageURL: similar.image, imdbRating: similar.imDbRating, description: nil))
+            similars.append(Poster(id: similar.id, title: similar.title, imageURL: similar.image, imdbRating: similar.imDbRating, description: similar.description))
         }
         return Film(
             id: film.id,

@@ -9,26 +9,20 @@ import Foundation
 
 struct IMDbSearchResultQuery: Codable {
     let expression: String
-    let results: [IMDbSearchPoster]
+    let results: [IMDbPoster]
 }
 
 struct IMDbRatingPosterQuery: Codable {
-    let items: [IMDbPosterWithRating]
+    let items: [IMDbPoster]
     let errorMessage: String
 }
 
-struct IMDbSearchPoster: Codable, Identifiable {
+struct IMDbPoster: Codable, Identifiable {
     let id: String
     let title: String
     let image: String
-    let description: String
-}
-
-struct IMDbPosterWithRating: Codable, Identifiable {
-    let id: String
-    let title: String
-    let image: String
-    let imDbRating: String
+    let description: String?
+    let imDbRating: String?
 }
 
 struct IMDbFilm: Identifiable, Codable {
@@ -45,7 +39,7 @@ struct IMDbFilm: Identifiable, Codable {
     let actorList: [IMDbActor]
     let contentRating: String
     let imDbRating: String?
-    let similars: [IMDbPosterWithRating]
+    let similars: [IMDbPoster]
 
     struct IMDbActor: Codable, Identifiable {
         let id: String

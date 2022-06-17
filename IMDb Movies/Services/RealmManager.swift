@@ -60,6 +60,7 @@ final class RealmManager {
         return actors
     }
     
+    /// Returns list of all saved films sorted by selected option
     func getFilms(sortOption: FilmsInteractor.SortOption) -> [Film] {
         let localRealm = try! Realm()
         let localfilms = localRealm.objects(SavedFilm.self).sorted(by: { filmA, filmB in
@@ -108,7 +109,7 @@ final class RealmManager {
             genres: film.genres,
             directors: film.directors,
             writers: film.writers,
-            actors: [],
+            actors: actorsForFilm(film: film),
             contentRating: film.contentRating,
             imdbRating: film.imdbRating,
             userRating: getSavedRating(for: film),
@@ -117,6 +118,25 @@ final class RealmManager {
         try! localRealm.write {
             localRealm.add(localFilm)
         }
+    }
+    
+    ///  Saves new actors for film (if needed) and returns list of saved actors
+    private func actorsForFilm(film: Film) -> [SavedActor] {
+        let localRealm = try! Realm()
+        let localActors = localRealm.objects(SavedActor.self)
+        var actors = [SavedActor]()
+        for filmActor in film.actors {
+            if let saved = localActors.first(where: { $0.id == filmActor.id }) {
+                actors.append(saved)
+            } else {
+                let actor = SavedActor(id: filmActor.id, imagePath: filmActor.imagePath!, name: filmActor.name)
+                try! localRealm.write {
+                    localRealm.add(actor)
+                }
+                actors.append(actor)
+            }
+        }
+        return actors
     }
     
     func deleteFilm(_ film: Film) {
@@ -128,4 +148,12 @@ final class RealmManager {
             }
         }
     }
+    
+    /*private func actorsForDeletion(with film: Film) -> [SavedActor] {
+        var actors = [SavedActor]()
+        let localRealm = try! Realm()
+        for filmActor in film.actors {
+            localRealm.objects(SavedActor.self).filter({ $0 })
+        }
+    }*/
 }

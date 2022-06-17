@@ -24,11 +24,11 @@ final class FileSystemManager {
         }
         let name = "\(imageName).jpg"
         let url = baseURL.appendingPathComponent(name)
-        try saveImageInFS(image: image, path: url)
+        try saveImageInFileSystem(image: image, path: url)
         return name
     }
     
-    private func saveImageInFS(image: UIImage, path: URL) throws {
+    private func saveImageInFileSystem(image: UIImage, path: URL) throws {
         guard let data = image.jpegData(compressionQuality: 0.5) else {
             throw FileSystemErrors.imageCompressingError
         }

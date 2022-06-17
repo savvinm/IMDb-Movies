@@ -89,11 +89,7 @@ class FilmDetailViewModel: ObservableObject {
     }
     
     private func saveFilm(film: Film) {
-        do {
-            try interactor.saveFilm(film)
-        } catch {
-            print(error)
-        }
+        interactor.saveFilm(film)
     }
     
     private func deleteFilm(film: Film) {
