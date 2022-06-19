@@ -8,25 +8,29 @@
 import SwiftUI
 
 struct SavedFilmsView: View {
-    @ObservedObject var savedFilmsViewModel = SavedFilmsViewModel()
+    @ObservedObject var localDataViewModel = LocalDataViewModel()
     
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
-                if savedFilmsViewModel.films.isEmpty {
+                if localDataViewModel.films.isEmpty {
                     emptyMessage
                 } else {
                     filterButtons
                     filmsList(in: geometry)
                 }
             }
-            .toolbar { EditButton() }
-            .onAppear { savedFilmsViewModel.updateFilms() }
+            .onAppear { localDataViewModel.updateFilms() }
+            .toolbar {
+                if !localDataViewModel.films.isEmpty {
+                    EditButton()
+                }
+            }
         }
     }
     
     private var emptyMessage: some View {
-        VStack {
+        VStack(alignment: .center) {
             Spacer()
             Text("There is nothing yet. Add movies to your saved list by tapping \(Image(systemName: "bookmark"))")
                 .multilineTextAlignment(.center)
@@ -34,27 +38,29 @@ struct SavedFilmsView: View {
                 .padding()
             Spacer()
         }
+        .padding()
     }
     
     private func filmsList(in geometry: GeometryProxy) -> some View {
         List {
-            ForEach(savedFilmsViewModel.films) { film in
-                InListPosterView(film: film, savedFilmsViewModel: savedFilmsViewModel)
+            ForEach(localDataViewModel.films) { film in
+                InListPosterView(film: film, localDataViewModel: localDataViewModel)
                     .frame(width: geometry.size.width * 0.75, height: geometry.size.height * 0.25)
+                    .padding(.vertical)
             }
             .onDelete { index in
-                savedFilmsViewModel.deleteFilm(at: index.first!)
+                localDataViewModel.deleteFilm(at: index.first!)
             }
-            .padding()
         }
     }
     
     private var filterButtons: some View {
-        HStack {
-            Button(action: { savedFilmsViewModel.listSort = .byDate }, label: { Text("by date") })
-                .padding()
-            Button(action: { savedFilmsViewModel.listSort = .byName }, label: { Text("by name") })
-                .padding()
+        Picker("Choose sorting option", selection: $localDataViewModel.listSort) {
+            ForEach(LocalDataViewModel.ListOption.allCases, id: \.self) {
+                Text($0.rawValue)
+            }
         }
+        .pickerStyle(SegmentedPickerStyle())
+        .padding()
     }
 }

@@ -14,13 +14,13 @@ struct Film: Identifiable {
     let year: String
     let posterURL: String?
     var imagePath: String?
-    let runtimeStr: String
+    let runtimeStr: String?
     let plot: String
     let genres: String
     let directors: String
     let writers: String
     var actors: [Actor]
-    let contentRating: String
+    let contentRating: String?
     let imdbRating: String?
     var userRating: Int?
     let similars: [Poster]

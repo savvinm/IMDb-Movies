@@ -14,21 +14,17 @@ struct SearchView: View {
     var body: some View {
         NavigationView {
             VStack {
-                VStack {
-                    searchField
-                        .font(.headline)
-                        .padding(.leading)
-                        .frame(maxWidth: .infinity, idealHeight: 50)
-                        .background(.thickMaterial)
-                        .cornerRadius(10)
-                }
-                .padding()
+                searchField
+                    .frame(maxWidth: .infinity, idealHeight: 50)
+                    .background(.thickMaterial)
+                    .cornerRadius(10)
+                    .padding()
                 resultBlock
                     .padding()
             }
             .onTapGesture { searchFieldIsFocused = false }
-            .padding(.top)
             .navigationBarHidden(true)
+            .padding(.top)
         }
     }
     
@@ -103,7 +99,7 @@ struct SearchView: View {
                     }
                 }
         }
-        .padding(.leading)
+        .padding(.leading, 25)
         .font(.headline)
     }
     

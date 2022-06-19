@@ -37,10 +37,7 @@ final class RealmManager {
     
     func isFilmSaved(filmId: String) -> Bool {
         let localRealm = try! Realm()
-        if localRealm.objects(SavedFilm.self).first(where: { $0.id == filmId }) != nil {
-            return true
-        }
-        return false
+        return localRealm.objects(SavedFilm.self).first(where: { $0.id == filmId }) != nil
     }
     
     private func writeRatingToFilm(rating: UserRating, filmId: String) {
@@ -120,7 +117,7 @@ final class RealmManager {
         }
     }
     
-    ///  Saves new actors for film (if needed) and returns list of saved actors
+    ///  Saves new actors for film (if needed) and returns list of SavedActor
     private func actorsForFilm(film: Film) -> [SavedActor] {
         let localRealm = try! Realm()
         let localActors = localRealm.objects(SavedActor.self)
@@ -140,6 +137,7 @@ final class RealmManager {
     }
     
     func deleteFilm(_ film: Film) {
+        deleteActors(for: film)
         let localRealm = try! Realm()
         let films = localRealm.objects(SavedFilm.self)
         if let film = films.first(where: { $0.id == film.id }) {
@@ -149,11 +147,28 @@ final class RealmManager {
         }
     }
     
-    /*private func actorsForDeletion(with film: Film) -> [SavedActor] {
-        var actors = [SavedActor]()
+    private func deleteActors(for film: Film) {
+        let actors = actorsForDeletion(with: film)
+        let localRaelm = try! Realm()
+        for filmActor in actors {
+            if let savedActor = localRaelm.objects(SavedActor.self).first(where: { $0.id == filmActor.id }) {
+                try! localRaelm.write {
+                    localRaelm.delete(savedActor)
+                }
+            }
+        }
+    }
+    
+    /// Returns list of actors that are saved for less than two movies
+    func actorsForDeletion(with film: Film) -> [Film.Actor] {
+        var actors = [Film.Actor]()
         let localRealm = try! Realm()
         for filmActor in film.actors {
-            localRealm.objects(SavedActor.self).filter({ $0 })
+            let films = localRealm.objects(SavedFilm.self).filter({ $0.actors.contains(where: { $0.id == filmActor.id }) })
+            if films.count <= 1 {
+                actors.append(filmActor)
+            }
         }
-    }*/
+        return actors
+    }
 }

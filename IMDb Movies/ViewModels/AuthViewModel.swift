@@ -13,12 +13,18 @@ class AuthViewModel: ObservableObject {
         case signedIn
         case signedOut
         case loading
+        case offline
     }
     
     private let clientId = "180084617862-tnl35nlvefv7innflt1a53isgi1o8nae.apps.googleusercontent.com"
     @Published private(set) var state: SignInState = .loading
     
     init() {
+        restoreSignIn()
+        offlineSignIn()
+    }
+    
+    func restoreSignIn() {
         if GIDSignIn.sharedInstance.hasPreviousSignIn() {
             GIDSignIn.sharedInstance.restorePreviousSignIn { [unowned self] _, error in
                 if let error = error {
@@ -29,6 +35,14 @@ class AuthViewModel: ObservableObject {
             }
         } else {
             state = .signedOut
+        }
+    }
+    
+    private func offlineSignIn() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) { [unowned self] in
+            if UserDefaults.standard.bool(forKey: "isSignedIn") && state != .signedIn {
+                state = .offline
+            }
         }
     }
     
@@ -46,12 +60,14 @@ class AuthViewModel: ObservableObject {
                 return
             }
             state = .signedIn
+            UserDefaults.standard.set(true, forKey: "isSignedIn")
         }
     }
     
     func signOut() {
         GIDSignIn.sharedInstance.signOut()
         state = .signedOut
+        UserDefaults.standard.set(false, forKey: "isSignedIn")
     }
     
     func getUserName() -> String? {

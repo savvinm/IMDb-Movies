@@ -15,7 +15,7 @@ struct InListPosterView: View {
     private let imageURL: String?
     private let imagePath: String?
     private let imdbRating: String?
-    private let savedFilmsViewModel: SavedFilmsViewModel?
+    private let localDataViewModel: LocalDataViewModel?
     private let isLocal: Bool
     
     init(poster: Poster) {
@@ -26,10 +26,10 @@ struct InListPosterView: View {
         imageURL = poster.imageURL
         imagePath = nil
         imdbRating = poster.imdbRating
-        savedFilmsViewModel = nil
+        localDataViewModel = nil
         isLocal = false
     }
-    init(film: Film, savedFilmsViewModel: SavedFilmsViewModel) {
+    init(film: Film, localDataViewModel: LocalDataViewModel) {
         self.film = film
         filmId = film.id
         title = film.fullTitle
@@ -37,7 +37,7 @@ struct InListPosterView: View {
         imageURL = nil
         imagePath = film.imagePath
         imdbRating = film.imdbRating
-        self.savedFilmsViewModel = savedFilmsViewModel
+        self.localDataViewModel = localDataViewModel
         isLocal = true
     }
     
@@ -63,7 +63,7 @@ struct InListPosterView: View {
             VStack(alignment: .center) {
                 Text(title)
                     .font(.headline)
-                Text(description)
+                Text(filmId)
                 Spacer()
             }
             .multilineTextAlignment(.center)
@@ -88,11 +88,11 @@ struct InListPosterView: View {
     private func posterImage(in geometry: GeometryProxy) -> some View {
         VStack {
             if imageURL != nil {
-                asyncImage(in: geometry)
+                ResizableAsyncImage(stringURL: imageURL!)
             }
             if
                 let imagePath = imagePath,
-                let image = savedFilmsViewModel?.getImage(in: imagePath)
+                let image = localDataViewModel?.getImage(in: imagePath)
             {
                 Image(uiImage: image)
                     .resizable()
@@ -102,15 +102,5 @@ struct InListPosterView: View {
         .frame(width: geometry.size.width, height: geometry.size.height)
         .clipped()
         .cornerRadius(10)
-    }
-    
-    private func asyncImage(in geometry: GeometryProxy) -> some View {
-        AsyncImage(url: URL(string: imageURL!)) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-        } placeholder: {
-            ProgressView()
-        }
     }
 }

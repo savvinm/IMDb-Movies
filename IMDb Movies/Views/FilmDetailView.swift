@@ -44,11 +44,11 @@ struct FilmDetailView: View {
                 filmBody(for: film, in: geometry)
             }
             .onTapGesture { showingRatingFrame = false }
-            .overlay(alignment: .center, content: {
+            .overlay(alignment: .center) {
                 if showingRatingFrame {
                     RatingSetFrame(geometry: geometry, filmDetailViewModel: filmDetailViewModel, showingRatingFrame: $showingRatingFrame, rating: filmDetailViewModel.film?.userRating)
                 }
-            })
+            }
         }
         .padding()
         .navigationTitle(film.fullTitle)
@@ -69,7 +69,7 @@ struct FilmDetailView: View {
             posterAndRating(for: film, in: geometry)
             infoBlock(for: film)
             descriptionBlock(for: film, in: geometry)
-            if !isLocal {
+            if !isLocal && !film.similars.isEmpty {
                 PostersHorizontalScroll(title: "More like this", items: film.similars)
                     .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
             }
@@ -88,7 +88,7 @@ struct FilmDetailView: View {
     private func poster(for film: Film, in geometry: GeometryProxy) -> some View {
         VStack {
             if film.posterURL != nil {
-                asyncImage(for: film)
+                ResizableAsyncImage(stringURL: film.posterURL!)
             }
             if
                 let imagePath = film.imagePath,
@@ -99,19 +99,9 @@ struct FilmDetailView: View {
                     .aspectRatio(contentMode: .fill)
             }
         }
-        .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.35)
+        .frame(width: geometry.size.width * 0.45, height: geometry.size.width * 0.65)
         .clipped()
         .cornerRadius(10)
-    }
-    
-    private func asyncImage(for film: Film) -> some View {
-        AsyncImage(url: URL(string: film.posterURL!)) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-        } placeholder: {
-            ProgressView()
-        }
     }
     
     private func ratingBlock(for film: Film) -> some View {
@@ -152,14 +142,13 @@ struct FilmDetailView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text(film.year)
-                Text(film.contentRating)
-                Text(film.runtimeStr)
+                Text(film.contentRating ?? "")
+                Text(film.runtimeStr ?? "")
             }
             Text(film.genres)
                 .padding(.bottom)
         }
     }
-    
     
     private func descriptionBlock(for film: Film, in geometry: GeometryProxy) -> some View {
         VStack(alignment: .leading) {

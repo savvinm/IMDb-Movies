@@ -57,17 +57,10 @@ struct PostersHorizontalScroll: View {
         GeometryReader { geometry in
             ZStack(alignment: .topTrailing) {
                 Rectangle().foregroundColor(.clear)
-                AsyncImage(url: URL(string: film.imageURL)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipped()
-                        .cornerRadius(10)
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(width: geometry.size.width, height: geometry.size.height)
+                ResizableAsyncImage(stringURL: film.imageURL)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .cornerRadius(10)
                 if film.imdbRating != nil && film.imdbRating != "" {
                     RatingIcon(value: film.imdbRating!)
                         .frame(width: geometry.size.width * 0.25, height: geometry.size.width * 0.25)

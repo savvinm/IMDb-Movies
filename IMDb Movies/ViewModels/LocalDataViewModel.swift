@@ -1,16 +1,16 @@
 //
-//  SavedFilmsViewModel.swift
+//  LocalDataViewModel.swift
 //  IMDb Movies
 //
-//  Created by Maksim Savvin on 15.06.2022.
+//  Created by Maksim Savvin on 18.06.2022.
 //
 
 import SwiftUI
 
-class SavedFilmsViewModel: ObservableObject {
-    enum ListOption {
-        case byName
-        case byDate
+class LocalDataViewModel: ObservableObject {
+    enum ListOption: String, CaseIterable {
+        case byDate = "by date"
+        case byName = "by name"
     }
     
     @Published private(set) var films = [Film]()
@@ -22,7 +22,6 @@ class SavedFilmsViewModel: ObservableObject {
         }
     }
     private let interactor = FilmsInteractor()
-    
     
     func getImage(in path: String) -> UIImage? {
         do {

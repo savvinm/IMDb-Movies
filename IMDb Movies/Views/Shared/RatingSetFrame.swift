@@ -24,13 +24,13 @@ struct RatingSetFrame: View {
                 .padding()
         }
         .overlay(alignment: .topTrailing, content: { closeButton })
-        .font(.headline)
-        .padding()
-        .background(.thickMaterial)
         .overlay {
             RoundedRectangle(cornerRadius: 15)
                 .stroke(.secondary, lineWidth: 4)
         }
+        .font(.headline)
+        .padding()
+        .background(.thickMaterial)
         .cornerRadius(15)
     }
     
@@ -50,7 +50,7 @@ struct RatingSetFrame: View {
                 filmDetailViewModel.rateFilm(rating: rating!)
             }
             showingRatingFrame = false
-        },label: {
+        }, label: {
             Text("Save")
         })
         .buttonStyle(PlainButtonStyle())

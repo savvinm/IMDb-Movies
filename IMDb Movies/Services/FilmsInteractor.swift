@@ -51,7 +51,7 @@ final class FilmsInteractor {
         }
     }
     
-    private func getRating(for film: Film) -> Int? {
+    func getRating(for film: Film) -> Int? {
         dbManager.getRating(for: film)
     }
     
@@ -81,7 +81,8 @@ final class FilmsInteractor {
         if let imagePath = film.imagePath {
             try fileSystemManager.deleteFile(fileName: imagePath)
         }
-        for filmActor in film.actors {
+        let actors = dbManager.actorsForDeletion(with: film)
+        for filmActor in actors {
             if let imagePath = filmActor.imagePath {
                 try fileSystemManager.deleteFile(fileName: imagePath)
             }
@@ -102,7 +103,7 @@ final class FilmsInteractor {
         return dict
     }
     
-    /// Takes film and images and returns  new film with
+    /// Takes film and images and returns  new film with image paths
     private func saveImages(for film: Film, images: [String: UIImage], maxActors: Int) throws -> Film {
         var paths = [String: String]()
         var filmWithImages = film

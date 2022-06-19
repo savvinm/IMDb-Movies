@@ -13,12 +13,13 @@ class FilmDetailViewModel: ObservableObject {
         case error(error: Error)
         case succes
     }
+    private let localDataViewModel = LocalDataViewModel()
+    private let interactor = FilmsInteractor()
     private let filmId: String?
     private(set) var film: Film?
     @Published private(set) var status: Statuses = .loading
     @Published private(set) var isSaved = false
     let maximumRating = 10
-    private let interactor = FilmsInteractor()
     
     init(filmId: String) {
         self.filmId = filmId
@@ -38,12 +39,7 @@ class FilmDetailViewModel: ObservableObject {
     }
     
     func getImage(in path: String) -> UIImage? {
-        do {
-            return try interactor.readImageInFileSystem(path: path)
-        } catch {
-            print(error)
-            return nil
-        }
+        localDataViewModel.getImage(in: path)
     }
     
     private func getFilm() {

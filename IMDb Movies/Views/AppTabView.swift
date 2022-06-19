@@ -35,7 +35,7 @@ struct AppTabView: View {
     }
     
     private var accountTab: some View {
-        AccountView().tabItem {
+        AccountView(isOffline: false).tabItem {
             VStack {
                 Image(systemName: "list.bullet")
                 Text("Account")

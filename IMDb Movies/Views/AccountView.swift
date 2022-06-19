@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AccountView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
+    let isOffline: Bool
     
     var body: some View {
         NavigationView {
@@ -33,20 +34,51 @@ struct AccountView: View {
     
     private var userInfoBlock: some View {
         Section {
-            HStack(alignment: .center) {
-                userImage
-                    .padding()
-                VStack(alignment: .leading) {
-                    Text("Hello, \(authViewModel.getUserName() ?? "")!")
-                    Text(authViewModel.getUserEmail() ?? "")
-                        .font(.callout)
-                        .foregroundColor(.secondary)
-                }
-                Spacer()
+            if isOffline {
+                offilneMessage
+                reconnectButton
+            } else {
+                userInfo
+                signOutButton
             }
-            signOutButton
         }
         .font(.headline)
+    }
+    
+    private var userInfo: some View {
+        HStack(alignment: .center) {
+            userImage
+                .padding()
+            VStack(alignment: .leading) {
+                Text("Hello, \(authViewModel.getUserName() ?? "")!")
+                Text(authViewModel.getUserEmail() ?? "")
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+            }
+            Spacer()
+        }
+    }
+    
+    private var reconnectButton: some View {
+        Button(action: { authViewModel.restoreSignIn() }, label: {
+            HStack {
+                Spacer()
+                Text("Try again")
+                    .foregroundColor(.blue)
+                Spacer()
+            }
+        })
+    }
+    
+    private var offilneMessage: some View {
+        HStack {
+           Spacer()
+            Text("No internet connection\nCheck your connetction and try again")
+                .multilineTextAlignment(.center)
+                .foregroundColor(.secondary)
+                .padding()
+            Spacer()
+        }
     }
     
     private var userImage: some View {
@@ -71,11 +103,5 @@ struct AccountView: View {
                 Spacer()
             }
         })
-    }
-}
-
-struct AccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        AccountView()
     }
 }

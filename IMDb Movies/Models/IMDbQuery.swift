@@ -31,13 +31,13 @@ struct IMDbFilm: Identifiable, Codable {
     let fullTitle: String
     let year: String
     let image: String
-    let runtimeStr: String
+    let runtimeStr: String?
     let plot: String
     let genres: String
     let directors: String
     let writers: String
     let actorList: [IMDbActor]
-    let contentRating: String
+    let contentRating: String?
     let imDbRating: String?
     let similars: [IMDbPoster]
 

@@ -27,20 +27,20 @@ class SavedFilm: Object {
     @Persisted var fullTitle: String
     @Persisted var year: String
     @Persisted var imagePath: String
-    @Persisted var runtimeStr: String
+    @Persisted var runtimeStr: String?
     @Persisted var plot: String
     @Persisted var genres: String
     @Persisted var directors: String
     @Persisted var writers: String
     @Persisted var actors = List<SavedActor>()
-    @Persisted var contentRating: String
+    @Persisted var contentRating: String?
     @Persisted var imdbRating: String?
     @Persisted var userRating: UserRating?
     @Persisted var savingDate: Date
     
     convenience init(id: String, title: String, fullTitle: String, year: String, imagePath: String,
-                     runtimeStr: String, plot: String, genres: String, directors: String, writers: String,
-                     actors: [SavedActor], contentRating: String, imdbRating: String?, userRating: UserRating?, savingDate: Date) {
+                     runtimeStr: String?, plot: String, genres: String, directors: String, writers: String,
+                     actors: [SavedActor], contentRating: String?, imdbRating: String?, userRating: UserRating?, savingDate: Date) {
         self.init()
         self.id = id
         self.title = title

@@ -49,7 +49,7 @@ struct ActorsHorizontalScroll: View {
         GeometryReader { geometry in
             VStack {
                 if filmActor.imageURL != nil {
-                    asyncImage(for: filmActor)
+                    ResizableAsyncImage(stringURL: filmActor.imageURL!)
                 }
                 if
                     let imagePath = filmActor.imagePath,
@@ -63,16 +63,6 @@ struct ActorsHorizontalScroll: View {
             .frame(width: geometry.size.width, height: geometry.size.height)
             .clipped()
             .cornerRadius(10)
-        }
-    }
-    
-    private func asyncImage(for filmActor: Film.Actor) -> some View {
-        AsyncImage(url: URL(string: filmActor.imageURL!)) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-        } placeholder: {
-            ProgressView()
         }
     }
     

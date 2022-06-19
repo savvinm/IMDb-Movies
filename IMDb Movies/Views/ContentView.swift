@@ -16,6 +16,8 @@ struct ContentView: View {
             LoginView()
         case .signedIn:
             AppTabView()
+        case .offline:
+            AccountView(isOffline: true)
         case .loading:
             ProgressView()
         }
