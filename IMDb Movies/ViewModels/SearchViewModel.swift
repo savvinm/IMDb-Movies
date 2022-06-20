@@ -28,6 +28,7 @@ class SearchViewModel: ObservableObject {
     
     private func startDelay() {
         guard searchQuery != "" else {
+            results = []
             searchStatus = .start
             return
         }

@@ -24,12 +24,12 @@ struct RatingSetFrame: View {
                 .padding()
         }
         .overlay(alignment: .topTrailing, content: { closeButton })
+        .font(.headline)
+        .padding()
         .overlay {
             RoundedRectangle(cornerRadius: 15)
                 .stroke(.secondary, lineWidth: 4)
         }
-        .font(.headline)
-        .padding()
         .background(.thickMaterial)
         .cornerRadius(15)
     }

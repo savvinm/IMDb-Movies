@@ -63,7 +63,7 @@ struct InListPosterView: View {
             VStack(alignment: .center) {
                 Text(title)
                     .font(.headline)
-                Text(filmId)
+                Text(description)
                 Spacer()
             }
             .multilineTextAlignment(.center)
