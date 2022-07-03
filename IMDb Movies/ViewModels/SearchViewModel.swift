@@ -5,6 +5,7 @@
 //  Created by Maksim Savvin on 12.06.2022.
 //
 
+import Combine
 import Foundation
 
 class SearchViewModel: ObservableObject {
@@ -25,6 +26,7 @@ class SearchViewModel: ObservableObject {
     @Published private(set) var results = [Poster]()
     private let interactor = FilmsInteractor()
     private var workItem: DispatchWorkItem?
+    private var cancellable: AnyCancellable?
     
     private func startDelay() {
         guard searchQuery != "" else {
@@ -42,19 +44,15 @@ class SearchViewModel: ObservableObject {
     }
     
     private func performSearch() {
-        interactor.searchFilms(searchQuery: searchQuery) { [weak self] query, films, error in
-            guard query == self?.searchQuery else {
-                return
-            }
-            if let error = error {
-                print(error)
-            }
-            if let films = films {
-                DispatchQueue.main.async {
-                    self?.results = films
-                    self?.searchStatus = films.isEmpty ? .empty : .something
+        let query = searchQuery
+        cancellable = interactor.searchFilms(searchQuery: searchQuery)
+            .sink { [weak self] films in
+                print(Thread.isMainThread)
+                guard query == self?.searchQuery else {
+                    return
                 }
+                self?.results = films
+                self?.searchStatus = films.isEmpty ? .empty : .something
             }
-        }
     }
 }

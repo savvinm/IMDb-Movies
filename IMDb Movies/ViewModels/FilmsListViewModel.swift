@@ -5,6 +5,7 @@
 //  Created by Maksim Savvin on 28.05.2022.
 //
 
+import Combine
 import Foundation
 
 class FilmsListViewModel: ObservableObject {
@@ -18,40 +19,30 @@ class FilmsListViewModel: ObservableObject {
     @Published private(set) var comingSoon = [Poster]()
     @Published private(set) var mostPopular = [Poster]()
     private let interactor = FilmsInteractor()
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
         fetchFilms()
     }
     
     func fetchFilms() {
-        interactor.getPosters(option: .inTheaters) { [weak self] films, error in
-            if let error = error {
-                print(error)
-            }
-            if let films = films {
+        interactor.getPosters(option: .inTheaters)
+            .sink { [weak self] films in
                 self?.inTheaters = films
                 self?.status = .succes
             }
-        }
-        interactor.getPosters(option: .comingSoon) { [weak self] films, error in
-            if let error = error {
-                print(error)
-            }
-            if let films = films {
+            .store(in: &cancellables)
+        interactor.getPosters(option: .comingSoon)
+            .sink { [weak self] films in
                 self?.comingSoon = films
                 self?.status = .succes
             }
-        }
-        interactor.getPosters(option: .mostPopular) { [weak self] films, error in
-            if let error = error {
-                print(error)
+            .store(in: &cancellables)
+        interactor.getPosters(option: .mostPopular)
+            .sink { [weak self] films in
+                self?.mostPopular = films
+                self?.status = .succes
             }
-            if let films = films {
-                DispatchQueue.main.async {
-                    self?.mostPopular = films
-                    self?.status = .succes
-                }
-            }
-        }
+            .store(in: &cancellables)
     }
 }

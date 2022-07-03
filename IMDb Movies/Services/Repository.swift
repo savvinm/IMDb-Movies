@@ -5,6 +5,7 @@
 //  Created by Maksim Savvin on 31.05.2022.
 //
 
+import Combine
 import Foundation
 import Moya
 
@@ -15,23 +16,22 @@ final class FilmsRepository {
         case imageDecodingError
     }
     
-    func fetchTitle(movieId: String, complitionHandler: @escaping (Film?, Error?) -> Void) {
-        provider.request(.title(id: movieId)) { [weak self] result in
-            switch result {
-            case .success(let response):
+    func fetchTitle(movieId: String) -> AnyPublisher<Film?, Error> {
+        return provider.requestPublisher(.title(id: movieId))
+            .map { [weak self] response in
                 do {
-                    let film = try self?.handleFilmQuery(from: response)
-                    complitionHandler(film, nil)
+                    return try self?.handleFilmQuery(from: response)
                 } catch {
-                    complitionHandler(nil, RepositoryErrors.mappingError)
+                    return nil
                 }
-            case .failure(let error):
-                complitionHandler(nil, error)
             }
-        }
+            .mapError { moyaError in
+                return moyaError
+            }
+            .eraseToAnyPublisher()
     }
     
-    func fetchList(option: FilmsInteractor.ListOption, complitionHandler: @escaping ([Poster]?, Error?) -> Void) {
+    func fetchList(option: FilmsInteractor.ListOption) -> AnyPublisher<[Poster]?, Error> {
         let moyaOption: IMDbService
         switch option {
         case .inTheaters:
@@ -43,9 +43,8 @@ final class FilmsRepository {
         case .search(let searchQuery):
             moyaOption = .search(searchQuery: searchQuery)
         }
-        provider.request(moyaOption) { [weak self] result in
-            switch result {
-            case .success(let response):
+        return provider.requestPublisher(moyaOption)
+            .map { [weak self] response in
                 do {
                     let films: [Poster]?
                     switch option {
@@ -54,14 +53,15 @@ final class FilmsRepository {
                     case .search:
                         films = try self?.handleSearchResultQuery(from: response)
                     }
-                    complitionHandler(films, nil)
+                    return films
                 } catch {
-                    complitionHandler(nil, RepositoryErrors.mappingError)
+                    return nil
                 }
-            case .failure(let error):
-                complitionHandler(nil, error)
             }
-        }
+            .mapError { moyaError in
+                return moyaError
+            }
+            .eraseToAnyPublisher()
     }
     
     private func handleRatingPosterQuery(from response: Moya.Response) throws -> [Poster] {
@@ -110,18 +110,17 @@ final class FilmsRepository {
             similars: similars)
     }
     
-    func getImage(url: String, complitionHandler: @escaping (UIImage?, Error?) -> Void) {
-        provider.request(.image(url: url)) { result in
-            switch result {
-            case .success(let response):
+    func getImage(url: String) -> AnyPublisher<UIImage?, Error> {
+       return provider.requestPublisher(.image(url: url))
+            .map { response in
                 if let image = UIImage(data: response.data) {
-                    complitionHandler(image, nil)
-                    return
+                    return image
                 }
-                complitionHandler(nil, RepositoryErrors.imageDecodingError)
-            case .failure(let error):
-                complitionHandler(nil, error)
+                return nil
             }
-        }
+            .mapError { moyaError in
+                return moyaError
+            }
+            .eraseToAnyPublisher()
     }
 }
