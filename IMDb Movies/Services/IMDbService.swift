@@ -8,7 +8,7 @@
 import Foundation
 import Moya
 
-public enum IMDbService {
+enum IMDbService {
     static private let key = "k_nrvtd8at"
     
     case inTheaters

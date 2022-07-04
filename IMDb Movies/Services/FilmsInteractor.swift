@@ -28,19 +28,7 @@ final class FilmsInteractor {
     private let repository = FilmsRepository()
     private let dbManager = RealmManager()
     private let fileSystemManager = FileSystemManager()
-    var cancellables = Set<AnyCancellable>()
-    
-    func searchFilms(searchQuery: String) -> AnyPublisher<[Poster], Never> {
-        repository.fetchList(option: .search(searchQuery: searchQuery))
-            .replaceError(with: [])
-            .map { films in
-                guard let films = films else {
-                    return []
-                }
-                return films
-            }
-            .eraseToAnyPublisher()
-    }
+    private var cancellables = Set<AnyCancellable>()
     
     func getPosters(option: ListOption) -> AnyPublisher<[Poster], Never> {
         repository.fetchList(option: option)

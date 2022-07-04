@@ -25,9 +25,7 @@ final class FilmsRepository {
                     return nil
                 }
             }
-            .mapError { moyaError in
-                return moyaError
-            }
+            .mapError { $0 }
             .eraseToAnyPublisher()
     }
     
@@ -58,9 +56,7 @@ final class FilmsRepository {
                     return nil
                 }
             }
-            .mapError { moyaError in
-                return moyaError
-            }
+            .mapError { $0 }
             .eraseToAnyPublisher()
     }
     
@@ -118,9 +114,7 @@ final class FilmsRepository {
                 }
                 return nil
             }
-            .mapError { moyaError in
-                return moyaError
-            }
+            .mapError { $0 }
             .eraseToAnyPublisher()
     }
 }

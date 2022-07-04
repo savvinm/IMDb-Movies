@@ -45,9 +45,8 @@ class SearchViewModel: ObservableObject {
     
     private func performSearch() {
         let query = searchQuery
-        cancellable = interactor.searchFilms(searchQuery: searchQuery)
+        cancellable = interactor.getPosters(option: .search(searchQuery: searchQuery))
             .sink { [weak self] films in
-                print(Thread.isMainThread)
                 guard query == self?.searchQuery else {
                     return
                 }
