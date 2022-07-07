@@ -37,7 +37,8 @@ final class RealmManager {
     
     func isFilmSaved(filmId: String) -> Bool {
         let localRealm = try! Realm()
-        return localRealm.objects(SavedFilm.self).first(where: { $0.id == filmId }) != nil
+        let localFilm = localRealm.objects(SavedFilm.self).first(where: { $0.id == filmId })
+        return localFilm != nil
     }
     
     private func writeRatingToFilm(rating: UserRating, filmId: String) {
@@ -164,7 +165,9 @@ final class RealmManager {
         var actors = [Film.Actor]()
         let localRealm = try! Realm()
         for filmActor in film.actors {
-            let films = localRealm.objects(SavedFilm.self).filter({ $0.actors.contains(where: { $0.id == filmActor.id }) })
+            let films = localRealm.objects(SavedFilm.self).filter {
+                $0.actors.contains(where: { $0.id == filmActor.id })
+            }
             if films.count <= 1 {
                 actors.append(filmActor)
             }

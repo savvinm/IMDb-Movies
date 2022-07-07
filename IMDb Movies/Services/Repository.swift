@@ -10,20 +10,16 @@ import Foundation
 import Moya
 
 final class FilmsRepository {
-    private let provider = MoyaProvider<IMDbService>()
     enum RepositoryErrors: Error {
         case mappingError
         case imageDecodingError
     }
+    private let provider = MoyaProvider<IMDbService>()
     
     func fetchTitle(movieId: String) -> AnyPublisher<Film?, Error> {
         return provider.requestPublisher(.title(id: movieId))
             .map { [weak self] response in
-                do {
-                    return try self?.handleFilmQuery(from: response)
-                } catch {
-                    return nil
-                }
+                return try? self?.handleFilmQuery(from: response)
             }
             .mapError { $0 }
             .eraseToAnyPublisher()
@@ -109,10 +105,7 @@ final class FilmsRepository {
     func getImage(url: String) -> AnyPublisher<UIImage?, Error> {
        return provider.requestPublisher(.image(url: url))
             .map { response in
-                if let image = UIImage(data: response.data) {
-                    return image
-                }
-                return nil
+                UIImage(data: response.data)
             }
             .mapError { $0 }
             .eraseToAnyPublisher()

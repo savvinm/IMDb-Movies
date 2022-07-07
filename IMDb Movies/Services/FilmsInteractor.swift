@@ -16,10 +16,6 @@ final class FilmsInteractor {
         case search(searchQuery: String)
     }
     
-    enum SavingErrors: Error {
-        case imageDownloadingTimeOut
-    }
-    
     enum SortOption {
         case byName
         case byDate
@@ -33,12 +29,7 @@ final class FilmsInteractor {
     func getPosters(option: ListOption) -> AnyPublisher<[Poster], Never> {
         repository.fetchList(option: option)
             .replaceError(with: [])
-            .map { films in
-                guard let films = films else {
-                    return []
-                }
-                return films
-            }
+            .map { $0 ?? [] }
             .eraseToAnyPublisher()
     }
     
@@ -145,10 +136,10 @@ final class FilmsInteractor {
             guard let self = self else {
                 return
             }
+            self.cancellables.removeAll()
             do {
                 let newFilm = try self.saveImages(for: film, images: images, maxActors: 5)
                 self.dbManager.saveFilm(film: newFilm)
-                self.cancellables.removeAll()
             } catch {
                 print(error)
             }

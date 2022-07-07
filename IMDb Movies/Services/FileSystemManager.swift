@@ -44,12 +44,13 @@ final class FileSystemManager {
             throw FileSystemErrors.invalidSystemRoot
         }
         let url = baseURL.appendingPathComponent(imagePath)
-        if let data = FileManager.default.contents(atPath: url.path),
-           let image = UIImage(data: data) {
-            return image
-        } else {
+        guard
+            let data = FileManager.default.contents(atPath: url.path),
+            let image = UIImage(data: data)
+        else {
             throw FileSystemErrors.readingError
         }
+        return image
     }
     
     func deleteFile(fileName: String) throws {

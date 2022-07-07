@@ -23,7 +23,7 @@ class SearchViewModel: ObservableObject {
             }
         }
     }
-    @Published private(set) var results = [Poster]()
+    private(set) var results = [Poster]()
     private let interactor = FilmsInteractor()
     private var workItem: DispatchWorkItem?
     private var cancellable: AnyCancellable?
