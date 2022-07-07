@@ -5,6 +5,7 @@
 //  Created by Maksim Savvin on 02.06.2022.
 //
 
+import Combine
 import SwiftUI
 
 class FilmDetailViewModel: ObservableObject {
@@ -15,11 +16,12 @@ class FilmDetailViewModel: ObservableObject {
     }
     private let localDataViewModel = LocalDataViewModel()
     private let interactor = FilmsInteractor()
-    private let filmId: String?
+    private let filmId: String
     private(set) var film: Film?
     @Published private(set) var status: Statuses = .loading
     @Published private(set) var isSaved = false
     let maximumRating = 10
+    private var cancellable: AnyCancellable?
     
     init(filmId: String) {
         self.filmId = filmId
@@ -32,10 +34,10 @@ class FilmDetailViewModel: ObservableObject {
     }
     
     func updateFilm() {
-        if film == nil && filmId != nil {
+        if film == nil {
             getFilm()
         }
-        isSaved = interactor.isFilmSaved(filmId: filmId!)
+        isSaved = interactor.isFilmSaved(filmId: filmId)
     }
     
     func getImage(in path: String) -> UIImage? {
@@ -43,23 +45,18 @@ class FilmDetailViewModel: ObservableObject {
     }
     
     private func getFilm() {
-        interactor.getFilm(movieId: filmId!) { [weak self] film, error in
-            guard let self = self else {
-                return
-            }
-            if let error = error {
-                DispatchQueue.main.async {
-                    self.status = .error(error: error)
+        cancellable = interactor.getFilm(movieId: filmId)
+            .sink(receiveCompletion: { [weak self] complition in
+                guard case let .failure(error) = complition else {
+                    return
                 }
-                return
-            }
-            if let film = film {
-                DispatchQueue.main.async {
-                    self.film = film
-                    self.status = .succes
+                self?.status = .error(error: error)
+            }, receiveValue: { [weak self] film in
+                if let film = film {
+                    self?.film = film
+                    self?.status = .succes
                 }
-            }
-        }
+            })
     }
     
     func rateFilm(rating: Int) {

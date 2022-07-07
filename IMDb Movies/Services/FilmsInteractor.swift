@@ -5,6 +5,7 @@
 //  Created by Maksim Savvin on 09.06.2022.
 //
 
+import Combine
 import SwiftUI
 
 final class FilmsInteractor {
@@ -15,10 +16,6 @@ final class FilmsInteractor {
         case search(searchQuery: String)
     }
     
-    enum SavingErrors: Error {
-        case imageDownloadingTimeOut
-    }
-    
     enum SortOption {
         case byName
         case byDate
@@ -27,28 +24,25 @@ final class FilmsInteractor {
     private let repository = FilmsRepository()
     private let dbManager = RealmManager()
     private let fileSystemManager = FileSystemManager()
+    private var cancellables = Set<AnyCancellable>()
     
-    func searchFilms(searchQuery: String, complitionHandler: @escaping (String, [Poster]?, Error?) -> Void) {
-        repository.fetchList(option: .search(searchQuery: searchQuery)) { films, error in
-            complitionHandler(searchQuery, films, error)
-        }
+    func getPosters(option: ListOption) -> AnyPublisher<[Poster], Never> {
+        repository.fetchList(option: option)
+            .replaceError(with: [])
+            .map { $0 ?? [] }
+            .eraseToAnyPublisher()
     }
     
-    func getPosters(option: ListOption, complitionHandler: @escaping ([Poster]?, Error?) -> Void) {
-        repository.fetchList(option: option) {films, error in
-            complitionHandler(films, error)
-        }
-    }
-    
-    func getFilm(movieId: String, complitionHandler: @escaping (Film?, Error?) -> Void) {
-        repository.fetchTitle(movieId: movieId) { [weak self] film, error in
-            guard var filmWithRating = film else {
-                complitionHandler(nil, error)
-                return
+    func getFilm(movieId: String) -> AnyPublisher<Film?, Error> {
+        repository.fetchTitle(movieId: movieId)
+            .map { [weak self] film in
+                guard var filmWithRating = film else {
+                    return nil
+                }
+                filmWithRating.userRating = self?.getRating(for: filmWithRating)
+                return filmWithRating
             }
-            filmWithRating.userRating = self?.getRating(for: filmWithRating)
-            complitionHandler(filmWithRating, nil)
-        }
+            .eraseToAnyPublisher()
     }
     
     func getRating(for film: Film) -> Int? {
@@ -124,20 +118,25 @@ final class FilmsInteractor {
         let group = DispatchGroup()
         for key in urls.keys {
             group.enter()
-            repository.getImage(url: urls[key]!) { image, error in
-                if let error = error {
+            repository.getImage(url: urls[key]!)
+                .sink(receiveCompletion: { result in
+                    guard case let .failure(error) = result else {
+                        return
+                    }
                     print(error)
-                }
-                if let image = image {
-                    images[key] = image
-                    group.leave()
-                }
-            }
+                }, receiveValue: { image in
+                    if let image = image {
+                        images[key] = image
+                        group.leave()
+                    }
+                })
+                .store(in: &cancellables)
         }
-        group.notify(queue: .main) { [weak self] in
+        group.notify(queue: .global()) { [weak self] in
             guard let self = self else {
                 return
             }
+            self.cancellables.removeAll()
             do {
                 let newFilm = try self.saveImages(for: film, images: images, maxActors: 5)
                 self.dbManager.saveFilm(film: newFilm)

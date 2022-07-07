@@ -16,6 +16,8 @@ PODS:
   - GTMSessionFetcher/Core (1.7.2)
   - Moya (15.0.0):
     - Moya/Core (= 15.0.0)
+  - Moya/Combine (15.0.0):
+    - Moya/Core
   - Moya/Core (15.0.0):
     - Alamofire (~> 5.0)
   - Realm (10.27.0):
@@ -27,6 +29,7 @@ PODS:
 DEPENDENCIES:
   - GoogleSignIn
   - Moya (~> 15.0)
+  - Moya/Combine (~> 15.0)
   - RealmSwift
 
 SPEC REPOS:
@@ -50,6 +53,6 @@ SPEC CHECKSUMS:
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
   RealmSwift: 271de77b09a73c5e46ee3252283878153bd5d288
 
-PODFILE CHECKSUM: 48f4f2eded44ef18b07ca134c1d15890f321405b
+PODFILE CHECKSUM: 04a9f393e3e08509f3c8e5cff075da5a82db49c9
 
 COCOAPODS: 1.11.3
