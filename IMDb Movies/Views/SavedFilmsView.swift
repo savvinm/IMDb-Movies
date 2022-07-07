@@ -14,7 +14,7 @@ struct SavedFilmsView: View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
                 if localDataViewModel.films.isEmpty {
-                    emptyMessage
+                    MessageInCenter(message: "There is nothing yet. Add movies to your saved list by tapping \(Image(systemName: "bookmark"))")
                 } else {
                     filterButtons
                     filmsList(in: geometry)
@@ -27,18 +27,6 @@ struct SavedFilmsView: View {
                 }
             }
         }
-    }
-    
-    private var emptyMessage: some View {
-        VStack(alignment: .center) {
-            Spacer()
-            Text("There is nothing yet. Add movies to your saved list by tapping \(Image(systemName: "bookmark"))")
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-                .padding()
-            Spacer()
-        }
-        .padding()
     }
     
     private func filmsList(in geometry: GeometryProxy) -> some View {

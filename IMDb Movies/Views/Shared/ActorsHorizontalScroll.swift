@@ -51,7 +51,7 @@ struct ActorsHorizontalScroll: View {
                 if filmActor.imageURL != nil {
                     ResizableAsyncImage(stringURL: filmActor.imageURL!)
                 }
-                if
+                else if
                     let imagePath = filmActor.imagePath,
                     let image = filmDetailViewModel!.getImage(in: imagePath)
                 {

@@ -58,7 +58,6 @@ struct FilmDetailView: View {
     private var saveButton: some View {
         Button(action: {
             filmDetailViewModel.toggleSaveFilm(presentationMode: isLocal ? presentationMode : nil)
-            
         }, label: {
             Image(systemName: filmDetailViewModel.isSaved ? "bookmark.fill" : "bookmark")
         })
@@ -90,7 +89,7 @@ struct FilmDetailView: View {
             if film.posterURL != nil {
                 ResizableAsyncImage(stringURL: film.posterURL!)
             }
-            if
+            else if
                 let imagePath = film.imagePath,
                 let image = filmDetailViewModel.getImage(in: imagePath)
             {

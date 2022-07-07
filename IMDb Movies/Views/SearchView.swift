@@ -32,9 +32,9 @@ struct SearchView: View {
         VStack {
             switch searchViewModel.searchStatus {
             case .start:
-                startMessage
+                MessageInCenter(message: "Start typing to search for moves")
             case .empty:
-                emptyMessage
+                MessageInCenter(message: "Nothing found. Try typing something else")
             case .something:
                 resultScroll
             case .searching:
@@ -50,29 +50,7 @@ struct SearchView: View {
             Spacer()
         }
     }
-    
-    private var startMessage: some View {
-        VStack {
-            Spacer()
-            Text("Start typing to search for moves")
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-                .padding()
-            Spacer()
-        }
-    }
-    
-    private var emptyMessage: some View {
-        VStack {
-            Spacer()
-            Text("Nothing found. Try typing something else")
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-                .padding()
-            Spacer()
-        }
-    }
-    
+
     private var resultScroll: some View {
         GeometryReader { geometry in
             ScrollView {

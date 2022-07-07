@@ -90,7 +90,7 @@ struct InListPosterView: View {
             if imageURL != nil {
                 ResizableAsyncImage(stringURL: imageURL!)
             }
-            if
+            else if
                 let imagePath = imagePath,
                 let image = localDataViewModel?.getImage(in: imagePath)
             {
