@@ -78,7 +78,7 @@ final class FilmsRepository {
         let film = try response.map(IMDbFilm.self)
         var actors = [Film.Actor]()
         for star in film.actorList {
-            actors.append(Film.Actor(id: star.id, imageURL: star.image, imagePath: nil, name: star.name))
+            actors.append(Film.Actor(id: star.id, imageURL: star.image, name: star.name))
         }
         var similars = [Poster]()
         for similar in film.similars {
@@ -102,8 +102,8 @@ final class FilmsRepository {
             similars: similars)
     }
     
-    func getImage(url: String) -> AnyPublisher<UIImage?, Error> {
-       return provider.requestPublisher(.image(url: url))
+    func getImage(urlString: String) -> AnyPublisher<UIImage?, Error> {
+       return provider.requestPublisher(.image(url: urlString))
             .map { response in
                 UIImage(data: response.data)
             }

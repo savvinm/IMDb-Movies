@@ -26,6 +26,7 @@ class FilmsListViewModel: ObservableObject {
     }
     
     func fetchFilms() {
+        cancellables.removeAll()
         interactor.getPosters(option: .inTheaters)
             .sink { [weak self] films in
                 self?.inTheaters = films

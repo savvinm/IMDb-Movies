@@ -11,11 +11,12 @@ struct PostersHorizontalScroll: View {
     let title: String
     let items: [Poster]
     var body: some View {
-        GeometryReader { geometry in
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.title)
-                    .fontWeight(Font.Weight.semibold)
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.title)
+                .fontWeight(Font.Weight.semibold)
+                .padding(.leading)
+            GeometryReader { geometry in
                 horizontalList(in: geometry)
             }
         }
@@ -23,10 +24,11 @@ struct PostersHorizontalScroll: View {
     
     private func horizontalList(in geometry: GeometryProxy) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 20) {
+            LazyHStack {
                 ForEach(items) { film in
                     filmNavigationLink(for: film)
-                        .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.8)
+                        .frame(width: geometry.size.width * 0.3, height: geometry.size.height)
+                        .modifier(HorizontallScrollPadding(item: film, items: items, padding: 5))
                 }
             }
         }

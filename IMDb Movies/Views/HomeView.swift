@@ -34,14 +34,20 @@ struct HomeView: View {
     
     private func filmsHorizontalLists(in geometry: GeometryProxy) -> some View {
         VStack {
-            PostersHorizontalScroll(title: "In theaters", items: filmsViewModel.inTheaters)
-                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
-            PostersHorizontalScroll(title: "Coming soon", items: filmsViewModel.comingSoon)
-                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
-            PostersHorizontalScroll(title: "Popular now", items: filmsViewModel.mostPopular)
-                .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
+            horizontalItem(title: "In theaters", items: filmsViewModel.inTheaters, in: geometry)
+            horizontalItem(title: "Coming soon", items: filmsViewModel.comingSoon, in: geometry)
+            horizontalItem(title: "Popular now", items: filmsViewModel.mostPopular, in: geometry)
         }
-        .padding()
+        .padding(.vertical)
+    }
+    
+    private func horizontalItem(title: String, items: [Poster], in geometry: GeometryProxy) -> some View {
+        VStack {
+            if !items.isEmpty {
+                PostersHorizontalScroll(title: title, items: items)
+                    .frame(width: geometry.size.width, height: geometry.size.width * 0.75)
+            }
+        }
     }
 }
 

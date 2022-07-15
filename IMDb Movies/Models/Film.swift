@@ -28,7 +28,6 @@ struct Film: Identifiable {
     struct Actor: Identifiable {
         let id: String
         let imageURL: String?
-        let imagePath: String?
         let name: String
     }
 }

@@ -62,13 +62,13 @@ class SavedFilm: Object {
 
 class SavedActor: Object {
     @Persisted var id: String
-    @Persisted var imagePath: String
+    @Persisted var imageURL: String
     @Persisted var name: String
     
-    convenience init(id: String, imagePath: String, name: String) {
+    convenience init(id: String, imageURL: String, name: String) {
         self.init()
         self.id = id
-        self.imagePath = imagePath
+        self.imageURL = imageURL
         self.name = name
     }
 }

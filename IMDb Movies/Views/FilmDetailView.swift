@@ -42,6 +42,7 @@ struct FilmDetailView: View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
                 filmBody(for: film, in: geometry)
+                    .padding(.bottom)
             }
             .onTapGesture { showingRatingFrame = false }
             .overlay(alignment: .center) {
@@ -50,7 +51,6 @@ struct FilmDetailView: View {
                 }
             }
         }
-        .padding()
         .navigationTitle(film.fullTitle)
         .toolbar { saveButton }
     }
@@ -66,7 +66,9 @@ struct FilmDetailView: View {
     private func filmBody(for film: Film, in geometry: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
             posterAndRating(for: film, in: geometry)
+                .padding(.horizontal)
             infoBlock(for: film)
+                .padding(.horizontal)
             descriptionBlock(for: film, in: geometry)
             if !isLocal && !film.similars.isEmpty {
                 PostersHorizontalScroll(title: "More like this", items: film.similars)
@@ -151,17 +153,24 @@ struct FilmDetailView: View {
     
     private func descriptionBlock(for film: Film, in geometry: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
-            Text(film.plot)
-                .padding(.bottom)
-            Divider()
-            ActorsHorizontalScroll(title: isLocal ? "Top 5 cast" : "Top cast", items: film.actors, filmDetailViewModel: isLocal ? filmDetailViewModel : nil)
+            VStack(alignment: .leading) {
+                Text(film.plot)
+                    .padding(.bottom)
+                Divider()
+            }
+            .padding(.horizontal)
+            ActorsHorizontalScroll(title: "Top cast", actors: film.actors, filmDetailViewModel: isLocal ? filmDetailViewModel : nil)
                 .frame(width: geometry.size.width, height: geometry.size.width * 0.65)
-                .padding(.bottom)
-            Divider()
-            descriptionSection(title: "Directors", value: film.directors)
-            Divider()
-            descriptionSection(title: "Writers", value: film.writers)
-            Divider()
+            VStack(alignment: .leading) {
+                Divider()
+                descriptionSection(title: "Directors", value: film.directors)
+                    .padding(.horizontal)
+                Divider()
+                descriptionSection(title: "Writers", value: film.writers)
+                    .padding(.horizontal)
+                Divider()
+            }
+            .padding(.horizontal)
         }
         .padding(.bottom)
     }

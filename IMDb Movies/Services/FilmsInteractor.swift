@@ -24,7 +24,7 @@ final class FilmsInteractor {
     private let repository = FilmsRepository()
     private let dbManager = RealmManager()
     private let fileSystemManager = FileSystemManager()
-    private var cancellables = Set<AnyCancellable>()
+    private var cancellable: AnyCancellable?
     
     func getPosters(option: ListOption) -> AnyPublisher<[Poster], Never> {
         repository.fetchList(option: option)
@@ -75,75 +75,40 @@ final class FilmsInteractor {
         if let imagePath = film.imagePath {
             try fileSystemManager.deleteFile(fileName: imagePath)
         }
-        let actors = dbManager.actorsForDeletion(with: film)
-        for filmActor in actors {
-            if let imagePath = filmActor.imagePath {
-                try fileSystemManager.deleteFile(fileName: imagePath)
-            }
-        }
     }
     
-    /// Prepare list of film images for downloading
-    private func getAllImageURLs(for film: Film, maxActors: Int) -> [String: String] {
-        var dict = [String: String]()
-        if let imagePath = film.posterURL {
-            dict[film.id] = imagePath
-        }
-        for filmActor in film.actors.prefix(maxActors) {
-            if let imagePath = filmActor.imageURL {
-                dict[filmActor.id] = imagePath
-            }
-        }
-        return dict
-    }
-    
-    /// Takes film and images and returns  new film with image paths
-    private func saveImages(for film: Film, images: [String: UIImage], maxActors: Int) throws -> Film {
-        var paths = [String: String]()
+    /// Takes film and image and returns  new film with image path
+    private func saveImage(for film: Film, image: UIImage) throws -> Film {
         var filmWithImages = film
-        for key in images.keys {
-            paths[key] = try fileSystemManager.saveImage(image: images[key]!, imageName: key)
-        }
-        filmWithImages.imagePath = paths[film.id]
-        filmWithImages.actors = []
-        for filmActor in film.actors.prefix(maxActors) {
-            filmWithImages.actors.append(Film.Actor(id: filmActor.id, imageURL: nil, imagePath: paths[filmActor.id], name: filmActor.name))
-        }
+        filmWithImages.imagePath = try fileSystemManager.saveImage(image: image, imageName: film.id)
         return filmWithImages
     }
     
     func saveFilm(_ film: Film) {
-        let urls = getAllImageURLs(for: film, maxActors: 5)
-        var images = [String: UIImage]()
-        let group = DispatchGroup()
-        for key in urls.keys {
-            group.enter()
-            repository.getImage(url: urls[key]!)
-                .sink(receiveCompletion: { result in
-                    guard case let .failure(error) = result else {
-                        return
-                    }
-                    print(error)
-                }, receiveValue: { image in
-                    if let image = image {
-                        images[key] = image
-                        group.leave()
-                    }
-                })
-                .store(in: &cancellables)
+        guard let urlString = film.posterURL else {
+            return
         }
-        group.notify(queue: .global()) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.cancellables.removeAll()
-            do {
-                let newFilm = try self.saveImages(for: film, images: images, maxActors: 5)
-                self.dbManager.saveFilm(film: newFilm)
-            } catch {
+        cancellable = repository.getImage(urlString: urlString)
+            .receive(on: DispatchQueue.global())
+            .sink(receiveCompletion: { result in
+                guard case let .failure(error) = result else {
+                    return
+                }
                 print(error)
-            }
-        }
+            }, receiveValue: { [weak self] image in
+                guard
+                    let self = self,
+                    let image = image
+                else {
+                    return
+                }
+                do {
+                    let newFilm = try self.saveImage(for: film, image: image)
+                    self.dbManager.saveFilm(film: newFilm)
+                } catch {
+                    print(error)
+                }
+            })
     }
     
     func isFilmSaved(filmId: String) -> Bool {

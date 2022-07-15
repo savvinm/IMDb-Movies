@@ -53,7 +53,7 @@ final class RealmManager {
     private func getActors(for film: SavedFilm) -> [Film.Actor] {
         var actors = [Film.Actor]()
         for filmActor in film.actors {
-            actors.append(Film.Actor(id: filmActor.id, imageURL: nil, imagePath: filmActor.imagePath, name: filmActor.name))
+            actors.append(Film.Actor(id: filmActor.id, imageURL: filmActor.imageURL, name: filmActor.name))
         }
         return actors
     }
@@ -127,7 +127,7 @@ final class RealmManager {
             if let saved = localActors.first(where: { $0.id == filmActor.id }) {
                 actors.append(saved)
             } else {
-                let actor = SavedActor(id: filmActor.id, imagePath: filmActor.imagePath!, name: filmActor.name)
+                let actor = SavedActor(id: filmActor.id, imageURL: filmActor.imageURL!, name: filmActor.name)
                 try! localRealm.write {
                     localRealm.add(actor)
                 }

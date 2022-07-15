@@ -9,14 +9,15 @@ import SwiftUI
 
 struct ActorsHorizontalScroll: View {
     let title: String
-    let items: [Film.Actor]
+    let actors: [Film.Actor]
     let filmDetailViewModel: FilmDetailViewModel?
     var body: some View {
-        GeometryReader { geometry in
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.title)
-                    .fontWeight(Font.Weight.semibold)
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.title)
+                .fontWeight(Font.Weight.semibold)
+                .padding(.leading)
+            GeometryReader { geometry in
                 horizontalList(in: geometry)
             }
         }
@@ -24,10 +25,11 @@ struct ActorsHorizontalScroll: View {
     
     private func horizontalList(in geometry: GeometryProxy) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 20) {
-                ForEach(items) { filmActor in
+            LazyHStack {
+                ForEach(actors) { filmActor in
                     infoView(for: filmActor)
-                        .frame(width: geometry.size.width * 0.25, height: geometry.size.height * 0.8)
+                        .frame(width: geometry.size.width * 0.25, height: geometry.size.height)
+                        .modifier(HorizontallScrollPadding(item: filmActor, items: actors, padding: 5))
                 }
             }
         }
@@ -36,7 +38,7 @@ struct ActorsHorizontalScroll: View {
     private func infoView(for filmActor: Film.Actor) -> some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
-                getImage(for: filmActor)
+                image(for: filmActor)
                     .frame(width: geometry.size.width, height: geometry.size.height * 0.65)
                 actorInfo(for: filmActor)
                 Spacer()
@@ -45,19 +47,11 @@ struct ActorsHorizontalScroll: View {
         }
     }
     
-    private func getImage(for filmActor: Film.Actor) -> some View {
+    private func image(for filmActor: Film.Actor) -> some View {
         GeometryReader { geometry in
             VStack {
                 if filmActor.imageURL != nil {
                     ResizableAsyncImage(stringURL: filmActor.imageURL!)
-                }
-                else if
-                    let imagePath = filmActor.imagePath,
-                    let image = filmDetailViewModel!.getImage(in: imagePath)
-                {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
                 }
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
