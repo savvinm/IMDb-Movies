@@ -32,9 +32,9 @@ struct SearchView: View {
         VStack {
             switch searchViewModel.searchStatus {
             case .start:
-                MessageInCenter(message: "Start typing to search for moves")
+                MessageInCenter(message: "Start typing to search for movies")
             case .empty:
-                MessageInCenter(message: "Nothing found. Try typing something else")
+                MessageInCenter(message: "Nothing found. Try something else")
             case .something:
                 resultScroll
             case .searching:
